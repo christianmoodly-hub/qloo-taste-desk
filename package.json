@@ -1,0 +1,26 @@
+{
+  "name": "qloo-taste-desk",
+  "private": true,
+  "type": "module",
+  "description": "Hackathon app that runs Qloo workflows through qloo exec on the server.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,client -c magenta,cyan \"npm run dev -w server\" \"npm run dev -w client\"",
+    "dev:server": "npm run dev -w server",
+    "dev:client": "npm run dev -w client",
+    "test": "npm test -w server",
+    "probe": "node scripts/probe.js",
+    "build": "npm run build -w client",
+    "start": "npm start -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

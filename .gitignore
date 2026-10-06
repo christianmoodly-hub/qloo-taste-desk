@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+coverage/
+*.log
+*.tgz
+
+.env
+.env.*
+!.env.example
+
+.qloo/
+.DS_Store
+Thumbs.db

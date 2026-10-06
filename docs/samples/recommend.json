@@ -1,0 +1,133 @@
+{
+  "ok": true,
+  "operation": "recommend",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "recommend",
+    "status": "needs_input",
+    "summary": "Choose or correct the unresolved Qloo inputs.",
+    "resolution": {
+      "issues": [
+        {
+          "input": "Radiohead",
+          "kind": "ambiguous",
+          "input_kind": "entity",
+          "field": "signals",
+          "candidates": [
+            {
+              "id": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+              "name": "Radiohead",
+              "type": "urn:entity:artist",
+              "popularity": 0.9999966263060412,
+              "description": "Radiohead is an English rock band known for their innovative and experimental approach to music."
+            },
+            {
+              "id": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+              "name": "Radiohead",
+              "type": "urn:entity:person",
+              "popularity": 0.9665528750502821
+            },
+            {
+              "id": "B48A4E4B-5448-44CB-A2BE-58108E3C26A2",
+              "name": "Radiohead",
+              "type": "urn:entity:album",
+              "popularity": 0.9570124427079798
+            },
+            {
+              "id": "1B71B1D7-E72E-45F2-95C1-ACEE0D87BDD4",
+              "name": "Radiohead",
+              "type": "urn:entity:person",
+              "popularity": 0.9259629706134963
+            }
+          ],
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/search",
+            "strategy": "exact_name_context_or_choice",
+            "remote": true,
+            "uses_model": false
+          }
+        },
+        {
+          "input": "ramen",
+          "kind": "ambiguous",
+          "input_kind": "entity",
+          "field": "signals",
+          "candidates": [
+            {
+              "id": "0E650077-B891-45DA-9C8B-9B006CBB7BA1",
+              "name": "Ramen",
+              "type": "urn:entity:place",
+              "popularity": 0.7633703193156571,
+              "description": "Casual Asian street-food restaurant serving fresh, healthy wok-cooked dishes, Southeast Asian curries, and customizable vegan options for takeout and dine-in.",
+              "address": "13 Carey's Ln Centre Cork T12 RD00, Ireland"
+            },
+            {
+              "id": "78E3BFD8-2657-4DEB-9AB7-67E4A0EC12BA",
+              "name": "Ramen",
+              "type": "urn:entity:place",
+              "popularity": 0.7619052925577458,
+              "description": "Fresh Asian street-food specializing in wok-cooked ramen, curries and healthy vegan options with dine-in, delivery and outdoor seating.",
+              "address": "Cork Rd Priorsknock Waterford Ireland"
+            },
+            {
+              "id": "8E3DD055-11A3-46C2-96D4-28E0401CC415",
+              "name": "Ramen",
+              "type": "urn:entity:place",
+              "popularity": 0.7611759365640443,
+              "description": "Casual Asian street-food restaurant in Douglas serving fresh, healthy ramen, curries and small plates with halal, vegan and vegetarian options, plus beer and wine.",
+              "address": "Barryscourt House East Village Douglas Cork, T12 KC7K, Ireland"
+            }
+          ],
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/search",
+            "strategy": "exact_name_context_or_choice",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [],
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "recommend",
+      "job": "recommend",
+      "signals": {
+        "entities": [
+          "Radiohead",
+          "ramen"
+        ]
+      },
+      "filters": {
+        "location": "Lisbon"
+      },
+      "operators": {},
+      "output": {
+        "limit": 5,
+        "explain": true
+      },
+      "assumptions": [
+        "explain=true"
+      ],
+      "unresolved": [],
+      "target": {
+        "type": "place"
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-4fdb376e-381c-4825-8ba5-734e173ecc01",
+      "duration_ms": 2677
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

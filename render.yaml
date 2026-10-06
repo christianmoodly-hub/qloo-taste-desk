@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: taste-desk
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build -w client
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 22.19.0
+      - key: HOST
+        value: 0.0.0.0
+      - key: QLOO_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false

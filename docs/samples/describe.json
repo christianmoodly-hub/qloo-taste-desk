@@ -1,0 +1,141 @@
+{
+  "ok": true,
+  "operation": "describe",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "describe",
+    "status": "ok",
+    "interpretation": {
+      "entity": {
+        "input": "Nike",
+        "entityId": "C70CE2B8-0AD1-4150-BF18-5A6347F2E860",
+        "name": "Nike",
+        "type": "urn:entity:brand",
+        "match": "exact"
+      }
+    },
+    "resolution": {
+      "contract_version": "1.0-preview.1",
+      "provider": {
+        "contract_version": "1.0-preview.1",
+        "provider_id": "qloo_api",
+        "name": "Qloo native resolution",
+        "entity_strategy": "exact_name_context_or_choice",
+        "tag_strategy": "target_scoped_semantic_search_exact_name_or_choice",
+        "remote": true,
+        "uses_model": false,
+        "fallback": "none"
+      },
+      "outcomes": [
+        {
+          "input": "Nike",
+          "status": "resolved",
+          "match": "exact",
+          "selected": {
+            "id": "C70CE2B8-0AD1-4150-BF18-5A6347F2E860",
+            "name": "Nike",
+            "type": "urn:entity:brand",
+            "popularity": 0.9999915241307996,
+            "description": "Nike is a global brand specializing in athletic footwear, apparel, equipment, and accessories for men, women, and kids."
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/search",
+            "strategy": "exact_name_context_or_choice",
+            "remote": true,
+            "uses_model": false
+          },
+          "alternatives": [
+            {
+              "id": "43A36E73-9BC7-4B09-A116-78E51554C3E3",
+              "name": "Nike Training Club",
+              "type": "urn:entity:brand",
+              "popularity": 0.9970080181722636,
+              "description": "Nike Training Club is a fitness app by Nike offering guided workouts, training plans, and expert advice to help users improve their fitness and training."
+            },
+            {
+              "id": "E26BC58D-18D2-405B-BC7B-7C556ADE3829",
+              "name": "Air Jordan Product Line",
+              "type": "urn:entity:brand",
+              "popularity": 0.9990167991727552,
+              "description": "Air Jordan is a Nike brand product line featuring basketball shoes and athletic apparel inspired by Michael Jordan."
+            },
+            {
+              "id": "0769579D-F2B0-49F4-B008-9E62427DCDCE",
+              "name": "Nike Swim",
+              "type": "urn:entity:brand",
+              "popularity": 0.6181197131765862
+            },
+            {
+              "id": "54E9B121-7023-4370-9ACB-8C5ACFD261B2",
+              "name": "Nornickel",
+              "type": "urn:entity:brand",
+              "popularity": 0.5497024969910664,
+              "description": "Nornickel is the world's largest producer of nickel and palladium, specializing in high-purity refined nickel and other metals."
+            }
+          ]
+        }
+      ]
+    },
+    "results": [
+      {
+        "entity_id": "C70CE2B8-0AD1-4150-BF18-5A6347F2E860",
+        "name": "Nike",
+        "popularity": 0.9999915241307996,
+        "properties": {
+          "description": "Nike is a premier global powerhouse in athletic performance, renowned for its relentless commitment to technological innovation and design excellence. Established in 1964, the brand serves a vast, diverse audience ranging from world-class elite athletes to everyday fitness enthusiasts. It maintains a strong market position through a comprehensive range of sportswear, footwear, and equipment that blends high functionality with universal cultural appeal. Beyond its products, the company actively engages in significant social advocacy, supporting community well-being and equality initiatives through its influential platform.",
+          "short_description": "Nike is a global brand specializing in athletic footwear, apparel, equipment, and accessories for men, women, and kids.",
+          "image": {
+            "url": "https://images.qloo.com/i/C70CE2B8-0AD1-4150-BF18-5A6347F2E860-420x-auto.jpg"
+          }
+        }
+      }
+    ],
+    "result_count": 1,
+    "provenance": {
+      "source": "Qloo API",
+      "endpoint": "/entities",
+      "documentation": "https://docs.qloo.com/reference/get-entities",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/entities",
+          "query": {
+            "entity_ids": [
+              "C70CE2B8-0AD1-4150-BF18-5A6347F2E860"
+            ]
+          }
+        }
+      ],
+      "transport": "direct"
+    },
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "describe",
+      "job": "describe",
+      "signals": {},
+      "filters": {},
+      "operators": {},
+      "output": {},
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "brand",
+        "entities": [
+          "Nike"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-744ef31c-2af3-4aa7-9d01-c1ab02a7cb6e",
+      "duration_ms": 3168
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}
