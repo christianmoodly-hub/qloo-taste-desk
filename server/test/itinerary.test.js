@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createApp } from "../src/app.js";
-import { fallbackItinerary, filterItinerary, chooseCandidate } from "../src/itinerary.js";
+import { fallbackItinerary, filterItinerary, chooseCandidate, selectRecommendations } from "../src/itinerary.js";
+import { planTaste } from "../src/planTaste.js";
 import { createRateLimiter } from "../src/rateLimit.js";
 
 const results = [
@@ -34,6 +35,65 @@ test("chooseCandidate prefers the artist when a name is ambiguous", () => {
     "Radiohead",
   );
   assert.equal(chosen.id, "artist");
+});
+
+test("place results drop organizations when enough venues remain", () => {
+  const picked = selectRecommendations(
+    [
+      { name: "SA Culinary Club", subtype: "urn:entity:place", affinity: 0.99, properties: { short_description: "A food club.", address: "1 Main" } },
+      { name: "Les Créatifs Restaurant", subtype: "restaurant", affinity: 0.4, properties: { address: "1 Main" } },
+      { name: "Jazz Club", subtype: "restaurant", affinity: 0.7 },
+      { name: "Montecasino Bird Gardens", subtype: "attraction", affinity: 0.5 },
+      { name: "Quiet Museum", affinity: 0.2, properties: { short_description: "A museum of film." } },
+    ],
+    "place",
+  );
+  assert.deepEqual(picked.map((item) => item.name), [
+    "Jazz Club",
+    "Montecasino Bird Gardens",
+    "Les Créatifs Restaurant",
+    "Quiet Museum",
+  ]);
+});
+
+test("saved preset answers without calling Qloo", async () => {
+  let called = false;
+  const response = await planTaste({
+    favorites: ["Radiohead", "Amélie", "ramen"],
+    target: "place",
+    city: "Johannesburg",
+    execute: async () => {
+      called = true;
+      throw new Error("Qloo should not run");
+    },
+    loadSaved: () => ({ ok: true, summary: "Saved for judging.", items: [{ name: "Les Créatifs Restaurant" }] }),
+  });
+  assert.equal(called, false);
+  assert.equal(response.status, 200);
+  assert.equal(response.body.grounded, true);
+  assert.equal(response.body.items[0].name, "Les Créatifs Restaurant");
+});
+
+test("plain mode keeps names Qloo never returned", async () => {
+  let called = false;
+  const response = await planTaste({
+    favorites: ["Radiohead", "Amélie", "ramen"],
+    target: "place",
+    city: "Johannesburg",
+    mode: "plain",
+    execute: async () => {
+      called = true;
+      throw new Error("Qloo should not run");
+    },
+    explainPlain: async () => ({
+      summary: "A model-only night.",
+      items: [{ name: "Invented Bistro", reason: "Because of ramen.", cited_inputs: ["ramen", "not a favorite"] }],
+    }),
+  });
+  assert.equal(called, false);
+  assert.equal(response.body.grounded, false);
+  assert.equal(response.body.items[0].name, "Invented Bistro");
+  assert.deepEqual(response.body.items[0].cited_inputs, ["ramen"]);
 });
 
 test("fallback itinerary uses the Qloo list", () => {

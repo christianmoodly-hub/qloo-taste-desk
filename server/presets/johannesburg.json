@@ -1,0 +1,108 @@
+{
+  "ok": true,
+  "summary": "Qloo ranked these from your favorites.",
+  "mode": "qloo",
+  "grounded": true,
+  "target": "place",
+  "city": "Johannesburg",
+  "resolved": [
+    {
+      "kind": "entity",
+      "input": "Radiohead",
+      "name": "Radiohead",
+      "entity_id": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C"
+    },
+    {
+      "kind": "entity",
+      "input": "Amélie",
+      "name": "Amélie",
+      "entity_id": "B7A0731F-EC92-496A-9C40-47D9770489B6"
+    },
+    {
+      "kind": "tag",
+      "input": "ramen",
+      "name": "Ramen",
+      "entity_id": "urn:tag:cuisine:qloo:ramen"
+    }
+  ],
+  "unresolved": [],
+  "items": [
+    {
+      "entity_id": "CF4552AD-5EDC-45B1-AE51-9C994632F2BC",
+      "name": "Les Créatifs Restaurant",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.7395290754581997,
+      "popularity": 0.4847706308195718,
+      "address": "Shop 12H, Hobart Grove Centre 52 Hobart Rd Bryanston, Sandton 2191, South Africa",
+      "reason": "Qloo ranked Les Créatifs Restaurant from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    },
+    {
+      "entity_id": "932F6F9C-3ABB-415E-ACC0-921D176912CF",
+      "name": "The Grand",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.7330918959076954,
+      "popularity": 0.22644172711202143,
+      "address": "3 Rivonia Rd Edenburg, Sandton 2129 South Africa",
+      "reason": "Qloo ranked The Grand from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    },
+    {
+      "entity_id": "DF7E30FA-16E4-455D-895F-F6BD1D02CEC0",
+      "name": "86 Public Fourways",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.7321306468996568,
+      "popularity": 0.26003352028768606,
+      "address": "Shop GF 33a, Pineslopes Boulevard, Corner Witkoppen Rd and The Straight Ave Fourways, Johannesburg 2194, South Africa",
+      "reason": "Qloo ranked 86 Public Fourways from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    },
+    {
+      "entity_id": "09C3CB65-34CF-460A-AB90-61693AC900B1",
+      "name": "Fourways",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.7304563411722517,
+      "popularity": 0.9619964109816088,
+      "address": "Kenya Fourways Obama South Africa",
+      "reason": "Qloo ranked Fourways from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    },
+    {
+      "entity_id": "6A1728A3-269B-478E-A6D0-CEB4A4E86644",
+      "name": "Montecasino Bird Gardens",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.7297213584379489,
+      "popularity": 0.9919102217933131,
+      "address": "Montecasino, 1 Montecasino Boulevard Johannesburg 2055 South Africa",
+      "reason": "Qloo ranked Montecasino Bird Gardens from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    }
+  ],
+  "qloo_count": 5,
+  "explained": false
+}

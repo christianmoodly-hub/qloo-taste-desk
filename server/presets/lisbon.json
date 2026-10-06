@@ -1,0 +1,123 @@
+{
+  "ok": true,
+  "summary": "Qloo ranked these from your favorites.",
+  "mode": "qloo",
+  "grounded": true,
+  "target": "place",
+  "city": "Lisbon",
+  "resolved": [
+    {
+      "kind": "entity",
+      "input": "Radiohead",
+      "name": "Radiohead",
+      "entity_id": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C"
+    },
+    {
+      "kind": "entity",
+      "input": "Amélie",
+      "name": "Amélie",
+      "entity_id": "B7A0731F-EC92-496A-9C40-47D9770489B6"
+    },
+    {
+      "kind": "tag",
+      "input": "ramen",
+      "name": "Ramen",
+      "entity_id": "urn:tag:cuisine:qloo:ramen"
+    }
+  ],
+  "unresolved": [],
+  "items": [
+    {
+      "entity_id": "03F2656B-851F-452E-B86F-831D6D8E5BEE",
+      "name": "Museum of Contemporary Art – MAC/CCB",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.8395070068870569,
+      "popularity": 0.9991189037855563,
+      "address": "Praça do Império 1449-003 Lisboa Portugal",
+      "reason": "Qloo ranked Museum of Contemporary Art – MAC/CCB from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    },
+    {
+      "entity_id": "A9364500-1DCA-478F-8F75-16770518DD05",
+      "name": "Igreja de Santa Luzia",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.8368771058182148,
+      "popularity": 0.9083916242369807,
+      "address": "Largo de Santa Luzia 1100-411 Lisboa Portugal",
+      "reason": "Qloo ranked Igreja de Santa Luzia from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    },
+    {
+      "entity_id": "A17DEAB0-F072-44CB-A876-81C7F4D3EB13",
+      "name": "Casa das Histórias Paula Rego",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.8360919056117172,
+      "popularity": 0.9909134166957332,
+      "address": "Av. da República 300 2750-475 Cascais Portugal",
+      "reason": "Qloo ranked Casa das Histórias Paula Rego from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    },
+    {
+      "entity_id": "ABA11F8A-7CAF-4F94-893A-EFA28C6B7B0B",
+      "name": "A Vida Portuguesa",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.8344721517133521,
+      "popularity": 0.8997311022134756,
+      "address": "R. Nova do Almada 72 1200-289 Lisboa Portugal",
+      "reason": "Qloo ranked A Vida Portuguesa from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    },
+    {
+      "entity_id": "E6DB31AB-EC64-4C50-95EC-69128543082B",
+      "name": "Palacio Belmonte Cafe & Bar",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.8328011229172744,
+      "popularity": 0.8889722190957917,
+      "address": "Tv. do Funil 14 1100-160 Lisboa Portugal",
+      "reason": "Qloo ranked Palacio Belmonte Cafe & Bar from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    },
+    {
+      "entity_id": "6A9FBE18-35A6-41BB-B5DB-071E8E8274C8",
+      "name": "Miradouro de Santa Catarina",
+      "type": "urn:entity",
+      "subtype": "urn:entity:place",
+      "affinity": 0.8326348504064748,
+      "popularity": 0.9982047478902166,
+      "address": "R. de Santa Catarina 1200-012 Lisboa Portugal",
+      "reason": "Qloo ranked Miradouro de Santa Catarina from the favorites you entered.",
+      "cited_inputs": [
+        "Radiohead",
+        "Amélie",
+        "ramen"
+      ]
+    }
+  ],
+  "qloo_count": 6,
+  "explained": false
+}

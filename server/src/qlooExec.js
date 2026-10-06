@@ -154,6 +154,7 @@ function parseStdout(stdout) {
 
 export function isRetryable(run) {
   if (!run || run.truncated) return false;
+  if (run.json?.error?.code === "QLOO_RATE_LIMIT") return false;
   if (run.timedOut) return true;
   if (run.spawnError) return run.spawnError.code !== "ENOENT";
   if (run.exitCode === 0 || run.exitCode === 2 || run.exitCode === 4 || run.exitCode === 130) return false;
@@ -162,6 +163,7 @@ export function isRetryable(run) {
 }
 
 function httpStatus(run) {
+  if (run?.json?.error?.code === "QLOO_RATE_LIMIT") return 429;
   if (run?.timedOut) return 504;
   if (run?.exitCode === 2) return 400;
   if (run?.exitCode === 4) return 503;
@@ -175,6 +177,9 @@ function errorMessage(run) {
   if (run?.spawnError) return "The Qloo executable could not be started.";
   if (run?.json?.error?.code === "QLOO_AUTH") {
     return "Qloo rejected the server credential. Check the server environment and gateway.";
+  }
+  if (run?.json?.error?.code === "QLOO_RATE_LIMIT") {
+    return "Qloo's shared demo quota is busy. Wait a minute, or open a saved preset.";
   }
   if (typeof run?.json?.error?.code === "string") {
     return `Qloo workflow failed (${run.json.error.code}).`;

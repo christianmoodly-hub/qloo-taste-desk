@@ -1,4 +1,4 @@
-export function createCache({ maxEntries = 100, ttlMs = 5 * 60 * 1000, now = () => Date.now() } = {}) {
+export function createCache({ maxEntries = 100, ttlMs = 60 * 60 * 1000, now = () => Date.now() } = {}) {
   const entries = new Map();
 
   function get(key) {

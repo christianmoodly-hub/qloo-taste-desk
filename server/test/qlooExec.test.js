@@ -124,6 +124,7 @@ test("stops at the attempt cap when every failure is retryable", async () => {
 
 test("isRetryable follows the harness exit codes", () => {
   assert.equal(isRetryable({ exitCode: 1, json: { error: { retryable: true } } }), true);
+  assert.equal(isRetryable({ exitCode: 1, json: { error: { code: "QLOO_RATE_LIMIT", retryable: true } } }), false);
   assert.equal(isRetryable({ exitCode: 1, json: { error: { retryable: false } } }), false);
   assert.equal(isRetryable({ exitCode: 4, json: { error: { retryable: true } } }), false);
   assert.equal(isRetryable({ timedOut: true }), true);

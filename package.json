@@ -17,6 +17,7 @@
     "dev:client": "npm run dev -w client",
     "test": "npm test -w server",
     "probe": "node scripts/probe.js",
+    "presets": "node scripts/save-presets.js",
     "build": "npm run build -w client",
     "start": "npm start -w server"
   },

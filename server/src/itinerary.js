@@ -46,6 +46,44 @@ export function chooseCandidate(candidates, input) {
   return ranked[0] || null;
 }
 
+const VENUE = /restaurant|cafe|coffee|bar|bakery|bistro|hotel|museum|gallery|attraction|landmark|nightlife|theater|theatre|venue|market|park|winery|brewery|diner|eatery|food|garden/i;
+const NON_VENUE = /organization|organisation|association|society|foundation|company|brand|person|club|nonprofit|charity/i;
+
+function affinityOf(item) {
+  return typeof item?.affinity === "number" ? item.affinity : -1;
+}
+
+function isNonVenue(item) {
+  const subtype = String(item?.subtype || "").replace(/^urn:entity:place:?/i, "");
+  const specificVenue = VENUE.test(subtype);
+  const orgName = NON_VENUE.test(item?.name || "") || NON_VENUE.test(subtype);
+  if (orgName && !specificVenue) return true;
+  return false;
+}
+
+export function selectRecommendations(results, target) {
+  const named = (results || []).filter((item) => item?.name);
+  const ranked = [...named].sort((left, right) => affinityOf(right) - affinityOf(left));
+  if (target !== "place") return ranked.slice(0, 6);
+  const venues = ranked.filter((item) => !isNonVenue(item));
+  return (venues.length >= 3 ? venues : ranked).slice(0, 6);
+}
+
+function publicItem(match, reason, cited) {
+  const address = match.properties?.address;
+  return {
+    entity_id: match.entity_id || null,
+    name: match.name,
+    type: match.type || null,
+    subtype: match.subtype || null,
+    affinity: match.affinity ?? null,
+    popularity: match.popularity ?? null,
+    address: typeof address === "string" ? address : null,
+    reason: String(reason || "Qloo ranked this from your favorites.").slice(0, 400),
+    cited_inputs: cited,
+  };
+}
+
 export function filterItinerary({ results, favorites, items }) {
   const byId = new Map();
   const byName = new Map();
@@ -64,26 +102,20 @@ export function filterItinerary({ results, favorites, items }) {
     const cited = Array.isArray(item.cited_inputs)
       ? item.cited_inputs.filter((input) => allowedFavorites.has(normalize(input)))
       : [];
-    kept.push({
-      entity_id: match.entity_id || null,
-      name: match.name,
-      type: match.type || null,
-      affinity: match.affinity ?? null,
-      reason: String(item.reason || "Qloo ranked this from your favorites.").slice(0, 400),
-      cited_inputs: cited.length > 0 ? cited : favorites,
-    });
+    kept.push(publicItem(
+      match,
+      item.reason,
+      cited.length > 0 ? cited : favorites,
+    ));
   }
 
   return kept;
 }
 
 export function fallbackItinerary(results, favorites) {
-  return results.slice(0, 6).map((result) => ({
-    entity_id: result.entity_id || null,
-    name: result.name,
-    type: result.type || null,
-    affinity: result.affinity ?? null,
-    reason: `Qloo ranked ${result.name} from the favorites you entered.`,
-    cited_inputs: favorites,
-  }));
+  return results.slice(0, 6).map((result) => publicItem(
+    result,
+    `Qloo ranked ${result.name} from the favorites you entered.`,
+    favorites,
+  ));
 }

@@ -7,7 +7,10 @@ export function createRateLimiter({ windowMs = 60_000, max = 20, now = () => Dat
     if (recent.length >= max) {
       res.status(429).json({
         ok: false,
-        error: { code: "RATE_LIMIT", message: "Too many requests. Try again in a minute." },
+        error: {
+          code: "RATE_LIMIT",
+          message: "This demo allows 20 plans a minute per person so the shared Qloo key lasts through judging. Wait a minute, or open a saved preset.",
+        },
       });
       return;
     }

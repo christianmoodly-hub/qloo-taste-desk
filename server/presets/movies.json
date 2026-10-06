@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "summary": "A curated movie selection tailored for fans of atmospheric, emotionally resonant, and inventive storytelling like Radiohead and Amélie.",
+  "mode": "qloo",
+  "grounded": true,
+  "target": "movie",
+  "city": null,
+  "resolved": [
+    {
+      "kind": "entity",
+      "input": "Radiohead",
+      "name": "Radiohead",
+      "entity_id": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C"
+    },
+    {
+      "kind": "entity",
+      "input": "Amélie",
+      "name": "Amélie",
+      "entity_id": "B7A0731F-EC92-496A-9C40-47D9770489B6"
+    },
+    {
+      "kind": "tag",
+      "input": "ramen",
+      "name": "Ramen",
+      "entity_id": "urn:tag:cuisine:qloo:ramen"
+    }
+  ],
+  "unresolved": [],
+  "items": [
+    {
+      "entity_id": "086E2298-1734-4043-A1C9-0E18121B384C",
+      "name": "Eternal Sunshine of the Spotless Mind",
+      "type": "urn:entity",
+      "subtype": "urn:entity:movie",
+      "affinity": 0.8639510699508631,
+      "popularity": 0.9996976176591287,
+      "address": null,
+      "reason": "Fans of Amélie and Radiohead will appreciate Eternal Sunshine of the Spotless Mind for its imaginative romantic narrative, emotional depth, and melancholic atmosphere.",
+      "cited_inputs": [
+        "Amélie",
+        "Radiohead"
+      ]
+    },
+    {
+      "entity_id": "1C930ECD-A0A3-47E9-895D-EA0D5E9B5469",
+      "name": "Dancer in the Dark",
+      "type": "urn:entity",
+      "subtype": "urn:entity:movie",
+      "affinity": 0.8916844333890869,
+      "popularity": 0.9880019006889997,
+      "address": null,
+      "reason": "Dancer in the Dark resonates with the dark, experimental, and emotionally poignant musical themes celebrated by Radiohead.",
+      "cited_inputs": [
+        "Radiohead"
+      ]
+    },
+    {
+      "entity_id": "43A03C5A-3692-43FF-9164-3378ED14FDA2",
+      "name": "Donnie Darko",
+      "type": "urn:entity",
+      "subtype": "urn:entity:movie",
+      "affinity": 0.8498023445747799,
+      "popularity": 0.9988660662217327,
+      "address": null,
+      "reason": "Donnie Darko offers an existential, moody, and surreal tone that connects naturally with listeners of Radiohead.",
+      "cited_inputs": [
+        "Radiohead"
+      ]
+    }
+  ],
+  "qloo_count": 6,
+  "explained": true
+}

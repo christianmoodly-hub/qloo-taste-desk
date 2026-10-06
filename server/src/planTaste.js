@@ -1,5 +1,6 @@
-import { explainWithGemini } from "./gemini.js";
-import { TARGETS, candidatesFrom, chooseCandidate, entityFromDescribe, fallbackItinerary, filterItinerary } from "./itinerary.js";
+import { draftUngrounded, explainWithGemini } from "./gemini.js";
+import { TARGETS, candidatesFrom, chooseCandidate, entityFromDescribe, fallbackItinerary, filterItinerary, selectRecommendations } from "./itinerary.js";
+import { savedPreset } from "./presets.js";
 
 function cleanList(values) {
   if (!Array.isArray(values)) return [];
@@ -26,7 +27,23 @@ export function readPlanRequest(body) {
   if (!TARGETS[target]) {
     return { error: "Choose a target domain." };
   }
-  return { favorites, target, city };
+  const mode = body?.mode === "plain" ? "plain" : "qloo";
+  return { favorites, target, city, mode, fresh: body?.fresh === true };
+}
+
+function plainItems(favorites, items) {
+  const allowed = new Set(favorites.map((item) => item.toLowerCase()));
+  return (items || []).filter((item) => item?.name).slice(0, 6).map((item) => {
+    const cited = Array.isArray(item.cited_inputs)
+      ? item.cited_inputs.filter((input) => typeof input === "string" && allowed.has(input.trim().toLowerCase()))
+      : [];
+    return {
+      name: String(item.name).slice(0, 120),
+      reason: String(item.reason || "The model named this without a Qloo catalog.").slice(0, 400),
+      cited_inputs: cited.length > 0 ? cited : favorites,
+      grounded: false,
+    };
+  });
 }
 
 async function mapPool(items, limit, worker) {
@@ -64,7 +81,51 @@ async function resolveFavorite(favorite, execute) {
   return null;
 }
 
-export async function planTaste({ favorites, target, city, execute, explain = explainWithGemini }) {
+export async function planTaste({
+  favorites,
+  target,
+  city,
+  mode = "qloo",
+  fresh = false,
+  execute,
+  explain = explainWithGemini,
+  explainPlain = draftUngrounded,
+  loadSaved = savedPreset,
+}) {
+  if (mode === "plain") {
+    try {
+      const drafted = await explainPlain({ favorites, city, target });
+      return {
+        status: 200,
+        body: {
+          ok: true,
+          mode: "plain",
+          grounded: false,
+          summary: drafted.summary || "This answer did not use Qloo.",
+          target,
+          city: city || null,
+          items: plainItems(favorites, drafted.items),
+          explained: true,
+        },
+      };
+    } catch (error) {
+      const detail = error?.detail || error?.message || "unknown";
+      console.error(`gemini failed: ${detail}`);
+      return {
+        status: 502,
+        body: {
+          ok: false,
+          error: { code: error?.code || "LLM_FAILED", message: "The plain model could not draft a plan." },
+        },
+      };
+    }
+  }
+
+  if (!fresh) {
+    const saved = loadSaved({ favorites, target, city });
+    if (saved) return { status: 200, body: { ...saved, mode: "qloo", grounded: true } };
+  }
+
   const described = await mapPool(favorites, 2, (favorite) => resolveFavorite(favorite, execute));
   const resolved = described.filter(Boolean);
   const unresolved = favorites.filter((favorite) => !resolved.some((item) => item.input === favorite));
@@ -84,7 +145,7 @@ export async function planTaste({ favorites, target, city, execute, explain = ex
 
   const input = {
     target_type: TARGETS[target],
-    limit: 6,
+    limit: target === "place" ? 12 : 6,
     explain: true,
   };
   if (signals.length > 0) input.signals = signals;
@@ -123,7 +184,10 @@ export async function planTaste({ favorites, target, city, execute, explain = ex
     };
   }
 
-  const results = Array.isArray(envelope.results) ? envelope.results.filter((item) => item?.name) : [];
+  const results = selectRecommendations(
+    Array.isArray(envelope.results) ? envelope.results : [],
+    target,
+  );
   if (results.length === 0) {
     return {
       status: 404,
@@ -161,6 +225,8 @@ export async function planTaste({ favorites, target, city, execute, explain = ex
     body: {
       ok: true,
       summary,
+      mode: "qloo",
+      grounded: true,
       target,
       city: city || null,
       resolved,

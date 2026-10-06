@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { credentialConfigured, llmConfigured } from "./env.js";
 import { OPERATION_IDS, OPERATIONS, containsSecretField } from "./operations.js";
 import { planTaste, readPlanRequest } from "./planTaste.js";
+import { listPresets } from "./presets.js";
 import { createExecutor } from "./qlooExec.js";
 import { createRateLimiter } from "./rateLimit.js";
 
@@ -49,6 +50,10 @@ export function createApp({ execute, plan, rateLimit } = {}) {
 
   app.get("/api/operations", (_req, res) => {
     res.json({ operations: OPERATIONS });
+  });
+
+  app.get("/api/presets", (_req, res) => {
+    res.json({ presets: listPresets() });
   });
 
   app.post("/api/exec", limit, async (req, res, next) => {

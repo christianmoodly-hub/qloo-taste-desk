@@ -69,8 +69,16 @@ code {
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: 18px;
+}
+
+.layout.compare {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.layout.compare > form {
+  grid-column: 1 / -1;
 }
 
 .panel {
@@ -125,6 +133,62 @@ input {
   list-style: none;
   display: grid;
   gap: 14px;
+}
+
+.presets {
+  margin-top: 16px;
+}
+
+.preset,
+.mode {
+  width: auto;
+  margin: 0;
+  padding: 8px 12px;
+  background: #efe6d8;
+  color: var(--ink);
+}
+
+.mode.selected,
+.preset:hover {
+  background: var(--ink);
+  color: #fffaf3;
+}
+
+.modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pick-title,
+.because {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.because {
+  margin: 8px 0 0;
+  font-family: Palatino, "Palatino Linotype", Georgia, serif;
+  font-size: 1.15rem;
+}
+
+.signal {
+  margin: 6px 0 0;
+  color: var(--blue);
+  font-size: 0.88rem;
+}
+
+.loading {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #f6efe4;
+}
+
+.loading p {
+  margin: 0;
 }
 
 .picks li {
@@ -223,6 +287,10 @@ button:disabled {
   background: #e5f6ea;
 }
 
+.pill.warn {
+  background: #f8e4c4;
+}
+
 .result h2 {
   margin: 0;
   font-family: Palatino, "Palatino Linotype", Georgia, serif;
@@ -243,7 +311,8 @@ pre {
 }
 
 @media (max-width: 800px) {
-  .layout {
+  .layout,
+  .layout.compare {
     grid-template-columns: 1fr;
   }
 }
