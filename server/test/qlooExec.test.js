@@ -19,6 +19,7 @@ test("child env keeps the server Qloo credential and drops unrelated secrets", (
     PATH: "C:\\Windows",
     QLOO_API_KEY: "server-key",
     GEMINI_API_KEY: "gem-key",
+    GROQ_API_KEY: "groq-key",
     AWS_SECRET_ACCESS_KEY: "nope",
     NPM_TOKEN: "nope",
   });
@@ -27,6 +28,7 @@ test("child env keeps the server Qloo credential and drops unrelated secrets", (
   assert.equal(env.AWS_SECRET_ACCESS_KEY, undefined);
   assert.equal(env.NPM_TOKEN, undefined);
   assert.equal(env.GEMINI_API_KEY, undefined);
+  assert.equal(env.GROQ_API_KEY, undefined);
 });
 
 test("exec argv is the harness bin plus a single allowlisted operation", () => {
@@ -35,12 +37,14 @@ test("exec argv is the harness bin plus a single allowlisted operation", () => {
 });
 
 test("redacts the server credential if a child echoes it", () => {
-  const text = redactSecrets("failed with key server-key and gem-key", {
+  const text = redactSecrets("failed with key server-key and gem-key and groq-key", {
     QLOO_API_KEY: "server-key",
     GEMINI_API_KEY: "gem-key",
+    GROQ_API_KEY: "groq-key",
   });
   assert.equal(text.includes("server-key"), false);
   assert.equal(text.includes("gem-key"), false);
+  assert.equal(text.includes("groq-key"), false);
   assert.match(text, /\[redacted\]/);
 });
 
@@ -187,8 +191,10 @@ test("client source and example env do not carry a Qloo credential", async () =>
   const example = await readFile(path.join(root, ".env.example"), "utf8");
   assert.match(example, /^QLOO_API_KEY=\s*$/m);
   assert.match(example, /^GEMINI_API_KEY=\s*$/m);
+  assert.match(example, /^GROQ_API_KEY=\s*$/m);
   assert.equal(example.includes("hack_"), false);
   assert.equal(example.includes("AQ."), false);
+  assert.equal(example.includes("gsk_"), false);
 
   const clientSrc = path.join(root, "client", "src");
   const files = await readdir(clientSrc);

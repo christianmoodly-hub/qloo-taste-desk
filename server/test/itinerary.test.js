@@ -96,6 +96,26 @@ test("plain mode keeps names Qloo never returned", async () => {
   assert.deepEqual(response.body.items[0].cited_inputs, ["ramen"]);
 });
 
+test("plain mode returns 502 when the model fails", async () => {
+  const response = await planTaste({
+    favorites: ["Radiohead", "Amélie", "ramen"],
+    target: "place",
+    city: "Johannesburg",
+    mode: "plain",
+    execute: async () => {
+      throw new Error("Qloo should not run");
+    },
+    explainPlain: async () => {
+      const error = new Error("model down");
+      error.code = "LLM_FAILED";
+      throw error;
+    },
+  });
+  assert.equal(response.status, 502);
+  assert.equal(response.body.ok, false);
+  assert.equal(response.body.error.code, "LLM_FAILED");
+});
+
 test("fallback itinerary uses the Qloo list", () => {
   const items = fallbackItinerary(results, ["ramen"]);
   assert.equal(items.length, 2);

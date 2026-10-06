@@ -1,65 +1,142 @@
-import { llmConfigured, redactSecrets } from "./env.js";
+import { redactSecrets } from "./env.js";
 
-const DEFAULT_MODEL = "gemini-3.8-flash";
+const GEMINI_MODELS = ["gemini-3.8-flash", "gemini-3.7-flash"];
+const GROQ_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
 
 function stripFences(text) {
   return text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
 }
 
-async function generateJson(prompt, env) {
-  const models = env.GEMINI_MODEL ? [env.GEMINI_MODEL] : [DEFAULT_MODEL, "gemini-3.7-flash"];
+function hasValue(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function failed(detail) {
+  const error = new Error("The explanation model could not finish.");
+  error.code = "LLM_FAILED";
+  error.detail = detail;
+  return error;
+}
+
+function parsedExplanation(text) {
+  const parsed = JSON.parse(stripFences(text));
+  return {
+    summary: typeof parsed.summary === "string" ? parsed.summary.slice(0, 400) : "",
+    items: Array.isArray(parsed.items) ? parsed.items : [],
+  };
+}
+
+async function generateWithGemini(prompt, env) {
+  const preferred = hasValue(env.GEMINI_MODEL) ? [env.GEMINI_MODEL] : [];
+  const models = [...new Set([...preferred, ...GEMINI_MODELS])];
   let lastError;
   for (const candidate of models) {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(candidate)}:generateContent`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "x-goog-api-key": env.GEMINI_API_KEY,
-        },
-        body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.3,
-            responseMimeType: "application/json",
+    let response;
+    try {
+      response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(candidate)}:generateContent`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            "x-goog-api-key": env.GEMINI_API_KEY,
           },
-        }),
-      },
-    );
-
-    const raw = await response.text();
-    if (response.status === 404 || response.status === 503) {
-      lastError = new Error("Gemini could not explain the Qloo results.");
-      lastError.code = "LLM_FAILED";
-      lastError.detail = redactSecrets(raw, env).slice(0, 300);
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.3,
+              responseMimeType: "application/json",
+            },
+          }),
+        },
+      );
+    } catch {
+      lastError = failed("Gemini request failed.");
       continue;
     }
+
+    const raw = await response.text();
     if (!response.ok) {
-      const error = new Error("Gemini could not explain the Qloo results.");
-      error.code = "LLM_FAILED";
-      error.detail = redactSecrets(raw, env).slice(0, 300);
-      throw error;
+      lastError = failed(redactSecrets(raw, env).slice(0, 300));
+      continue;
     }
 
-    const payload = JSON.parse(raw);
-    const text = (payload.candidates?.[0]?.content?.parts || []).map((part) => part.text || "").join("");
-    const parsed = JSON.parse(stripFences(text));
-    return {
-      summary: typeof parsed.summary === "string" ? parsed.summary.slice(0, 400) : "",
-      items: Array.isArray(parsed.items) ? parsed.items : [],
-    };
+    try {
+      const payload = JSON.parse(raw);
+      const text = (payload.candidates?.[0]?.content?.parts || []).map((part) => part.text || "").join("");
+      return parsedExplanation(text);
+    } catch {
+      lastError = failed("Gemini returned an unreadable explanation.");
+    }
   }
   throw lastError;
 }
 
-export async function explainWithGemini({ favorites, city, target, results }, env = process.env) {
-  if (!llmConfigured(env)) {
-    const error = new Error("Gemini credential is not configured.");
+async function generateWithGroq(prompt, env) {
+  const preferred = hasValue(env.GROQ_MODEL) ? [env.GROQ_MODEL] : [];
+  const models = [...new Set([...preferred, ...GROQ_MODELS])];
+  let lastError;
+  for (const candidate of models) {
+    let response;
+    try {
+      response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${env.GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: candidate,
+          temperature: 0.3,
+          response_format: { type: "json_object" },
+          messages: [
+            { role: "system", content: "Return one JSON object and nothing else." },
+            { role: "user", content: prompt },
+          ],
+        }),
+      });
+    } catch {
+      lastError = failed("Groq request failed.");
+      continue;
+    }
+
+    const raw = await response.text();
+    if (!response.ok) {
+      lastError = failed(redactSecrets(raw, env).slice(0, 300));
+      continue;
+    }
+
+    try {
+      const payload = JSON.parse(raw);
+      return parsedExplanation(payload.choices?.[0]?.message?.content || "");
+    } catch {
+      lastError = failed("Groq returned an unreadable explanation.");
+    }
+  }
+  throw lastError;
+}
+
+async function generateJson(prompt, env) {
+  const geminiReady = hasValue(env.GEMINI_API_KEY);
+  const groqReady = hasValue(env.GROQ_API_KEY);
+  if (!geminiReady && !groqReady) {
+    const error = new Error("No explanation model is configured.");
     error.code = "LLM_AUTH";
     throw error;
   }
 
+  if (geminiReady) {
+    try {
+      return await generateWithGemini(prompt, env);
+    } catch (error) {
+      if (!groqReady) throw error;
+    }
+  }
+
+  return generateWithGroq(prompt, env);
+}
+
+export async function explainWithGemini({ favorites, city, target, results }, env = process.env) {
   const catalog = results.map((item) => ({
     entity_id: item.entity_id,
     name: item.name,
@@ -85,12 +162,6 @@ export async function explainWithGemini({ favorites, city, target, results }, en
 }
 
 export async function draftUngrounded({ favorites, city, target }, env = process.env) {
-  if (!llmConfigured(env)) {
-    const error = new Error("Gemini credential is not configured.");
-    error.code = "LLM_AUTH";
-    throw error;
-  }
-
   const prompt = [
     "Draft a short plan from the favorites alone. You have no catalog and no taste graph.",
     "Name specific items in the target domain. They do not need to be verified.",

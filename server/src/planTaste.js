@@ -109,8 +109,7 @@ export async function planTaste({
         },
       };
     } catch (error) {
-      const detail = error?.detail || error?.message || "unknown";
-      console.error(`gemini failed: ${detail}`);
+      console.error("explanation unavailable");
       return {
         status: 502,
         body: {
@@ -208,9 +207,8 @@ export async function planTaste({
     items = filterItinerary({ results, favorites, items: drafted.items });
     summary = drafted.summary;
     explained = items.length > 0;
-  } catch (error) {
-    const detail = error?.detail || error?.message || "unknown";
-    console.error(`gemini failed: ${detail}`);
+  } catch {
+    console.error("explanation unavailable");
     items = [];
   }
 

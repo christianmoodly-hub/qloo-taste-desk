@@ -9,7 +9,14 @@ import { listPresets } from "./presets.js";
 import { createExecutor } from "./qlooExec.js";
 import { createRateLimiter } from "./rateLimit.js";
 
-const LOCAL_ORIGINS = new Set(["http://localhost:5173", "http://127.0.0.1:5173"]);
+const LOCAL_ORIGINS = new Set([
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:5174",
+  "http://127.0.0.1:5174",
+  "http://localhost:5175",
+  "http://127.0.0.1:5175",
+]);
 const clientDist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../client/dist");
 
 function isPlainObject(value) {
@@ -141,6 +148,7 @@ export function createApp({ execute, plan, rateLimit } = {}) {
       });
       return;
     }
+    console.error(error);
     res.status(500).json({
       ok: false,
       error: { code: "INTERNAL", message: "The server could not complete the request." },

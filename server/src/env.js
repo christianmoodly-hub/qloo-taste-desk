@@ -13,10 +13,12 @@ export function credentialConfigured(env = process.env) {
 }
 
 export function llmConfigured(env = process.env) {
-  return typeof env.GEMINI_API_KEY === "string" && env.GEMINI_API_KEY.trim().length > 0;
+  const gemini = typeof env.GEMINI_API_KEY === "string" && env.GEMINI_API_KEY.trim().length > 0;
+  const groq = typeof env.GROQ_API_KEY === "string" && env.GROQ_API_KEY.trim().length > 0;
+  return gemini || groq;
 }
 
-const SECRET_ENV_NAMES = ["QLOO_API_KEY", "GEMINI_API_KEY"];
+const SECRET_ENV_NAMES = ["QLOO_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY"];
 
 export function redactSecrets(text, env = process.env) {
   if (typeof text !== "string" || text.length === 0) return "";
