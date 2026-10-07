@@ -1,8 +1,14 @@
 # Taste Desk
 
-A small hackathon app that turns a few favorites into a Qloo-backed plan. The browser never sees the Qloo or Gemini credentials. An Express server reads them from its environment, runs `qloo exec`, and asks Gemini only to explain items Qloo returned.
+Live demo: [https://qloo-taste-desk.onrender.com](https://qloo-taste-desk.onrender.com)
 
-The workspace did not include a `starter/cli-workflow` guide. Workflow calls follow the non-interactive contract in `@qloo/qloo-harness` 0.1.26.
+![The interview, ready to plan](docs/screenshots/form.png)
+
+![A Qloo plan with the agent trace](docs/screenshots/trace.png)
+
+![The same favorites, side by side](docs/screenshots/compare.png)
+
+A small hackathon app that turns a few favorites into a Qloo-backed plan. The browser never sees the Qloo or Gemini credentials. An Express server reads them from its environment, runs `qloo exec`, and asks a Gemini Flash model only to explain items Qloo returned. Workflow calls follow the non-interactive contract in `@qloo/qloo-harness` 0.1.26.
 
 ## Layout
 
@@ -28,7 +34,7 @@ npm run probe
 npm run dev
 ```
 
-The API listens on `http://127.0.0.1:8787`. The page is at `http://localhost:5173` and proxies `/api` to that server. The status pill says Connected when the Qloo key is set.
+The API listens on `http://127.0.0.1:8787` when you open it from this machine. The page is at `http://localhost:5173` and proxies `/api` to that server. The status pill says Connected when the Qloo key is set.
 
 `POST /api/plan` accepts 3 to 5 favorites, a target (`place`, `movie`, `brand`, `artist`, or `book`), and an optional city. It resolves each favorite with `describe`, calls `recommend`, then asks Gemini for a JSON itinerary. Any item the model names that Qloo did not return is dropped. Place results that look like organizations are dropped when enough visitable venues remain. `/api/exec` and `/api/plan` share a limit of 20 requests per minute per IP. Identical successful Qloo calls stay cached for one hour.
 
@@ -41,13 +47,13 @@ Set these on the server only. The names are the whole contract; values stay out 
 | Name | Role |
 | --- | --- |
 | `QLOO_API_KEY` | Server credential for `qloo exec` |
-| `GEMINI_API_KEY` | Explains Qloo results with `gemini-3.8-flash`, the highest free Gemini model |
+| `GEMINI_API_KEY` | Explains Qloo results with a Gemini Flash model |
 | `GROQ_API_KEY` | Server-only fallback if Gemini cannot answer. The page keeps its loading state |
 | `QLOO_BASE_URL` | Hackathon gateway, `https://hackathon.api.qloo.com` |
 | `QLOO_TRUSTED_BASE_URL` | Must equal `QLOO_BASE_URL` or the harness will not send the key |
-| `HOST` | `127.0.0.1` locally, `0.0.0.0` on Render |
-| `PORT` | Defaults to `8787` |
-| `GEMINI_MODEL` | Optional. Defaults to `gemini-3.8-flash`, then `gemini-3.7-flash` |
+| `HOST` | Defaults to `0.0.0.0`, which is what a hosted deploy needs |
+| `PORT` | Defaults to `8787`. Render sets this itself |
+| `GEMINI_MODEL` | Optional. Defaults to a Gemini Flash model, then the next Flash model |
 | `GROQ_MODEL` | Optional. Defaults to `openai/gpt-oss-120b`, then `openai/gpt-oss-20b` |
 
 ## Deploy
@@ -64,7 +70,11 @@ Regenerates `server/presets/*.json` from a live plan. The script refuses to writ
 
 ## What is Qloo-powered
 
-Resolution, recommendations, affinity, and popularity come from Qloo. Gemini may only explain items in that result set, and the server drops anything else. The plain-LLM column is the control: same favorites, no catalog, no guarantee the places exist.
+Resolution, recommendations, affinity, and popularity come from Qloo. The model may only explain items in that result set, and the server drops anything else. Each successful plan includes an agent trace: which entity or tag was chosen, that recommend ran, and any non-venues or invented names that were removed. The plain-LLM column is the control: same favorites, no catalog, no guarantee the places exist.
+
+## Limits
+
+Results are aggregate taste affinities, not claims about any individual. The side-by-side model column is unchecked on purpose.
 
 ## Architecture
 
@@ -72,7 +82,7 @@ The browser talks only to this API. Express spawns `qloo exec` with `shell: fals
 
 ## Project description
 
-Taste Desk turns three to five favorites into a plan in another domain. Qloo resolves the favorites, recommends real entities, and returns affinity. A server-side model writes the reason for each pick and must cite the favorites that connected to it. Names the model invents are removed. A side-by-side control shows what a plain model says with no Qloo data. Credentials never reach the browser.
+A plain model, given the same favorites, names venues Qloo never returned. Taste Desk turns three to five favorites into a plan in another domain, and it would not work the same without Qloo. Qloo resolves the favorites, recommends real entities, and returns affinity. The page shows that path as an agent trace. A server-side model writes the reason for each pick and must cite the favorites that connected to it. Names the model invents are removed. A side-by-side control shows the unchecked plain answer. Credentials never reach the browser.
 
 ## License
 

@@ -69,6 +69,14 @@ export function selectRecommendations(results, target) {
   return (venues.length >= 3 ? venues : ranked).slice(0, 6);
 }
 
+export function droppedNonVenueCount(results, target) {
+  if (target !== "place") return 0;
+  const named = (results || []).filter((item) => item?.name);
+  const venues = named.filter((item) => !isNonVenue(item));
+  if (venues.length < 3) return 0;
+  return named.length - venues.length;
+}
+
 function publicItem(match, reason, cited) {
   const address = match.properties?.address;
   return {

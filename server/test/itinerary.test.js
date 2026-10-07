@@ -72,6 +72,7 @@ test("saved preset answers without calling Qloo", async () => {
   assert.equal(response.status, 200);
   assert.equal(response.body.grounded, true);
   assert.equal(response.body.items[0].name, "Les Créatifs Restaurant");
+  assert.deepEqual(response.body.trace, ["Called recommend for places in Johannesburg"]);
 });
 
 test("plain mode keeps names Qloo never returned", async () => {
@@ -114,6 +115,86 @@ test("plain mode returns 502 when the model fails", async () => {
   assert.equal(response.status, 502);
   assert.equal(response.body.ok, false);
   assert.equal(response.body.error.code, "LLM_FAILED");
+});
+
+test("plan trace records resolve, tags, recommend, and drops", async () => {
+  const response = await planTaste({
+    favorites: ["Radiohead", "ramen", "Amélie"],
+    target: "place",
+    city: "Lisbon",
+    fresh: true,
+    loadSaved: () => null,
+    execute: async ({ operation, input }) => {
+      if (operation === "describe" && input.entity === "Radiohead") {
+        return {
+          body: {
+            result: {
+              status: "ok",
+              interpretation: {
+                entity: { entityId: "artist-1", name: "Radiohead", type: "urn:entity:artist" },
+              },
+            },
+          },
+        };
+      }
+      if (operation === "describe" && input.entity === "Amélie") {
+        return {
+          body: {
+            result: {
+              status: "ok",
+              interpretation: {
+                entity: { entityId: "movie-1", name: "Amélie", type: "urn:entity:movie" },
+              },
+            },
+          },
+        };
+      }
+      if (operation === "describe") {
+        return { body: { result: { status: "needs_input" } } };
+      }
+      if (operation === "find_tags") {
+        return {
+          body: {
+            result: {
+              results: [{ id: "urn:tag:cuisine:qloo:ramen", name: "Ramen", type: "urn:tag:cuisine" }],
+            },
+          },
+        };
+      }
+      return {
+        status: 200,
+        body: {
+          ok: true,
+          result: {
+            status: "ok",
+            results: [
+              { entity_id: "v1", name: "Jazz Club", subtype: "restaurant", affinity: 0.7 },
+              { entity_id: "v2", name: "Quiet Museum", subtype: "museum", affinity: 0.5 },
+              { entity_id: "v3", name: "Les Créatifs Restaurant", subtype: "restaurant", affinity: 0.4 },
+              { entity_id: "org", name: "SA Culinary Club", subtype: "urn:entity:place", affinity: 0.99 },
+            ],
+          },
+        },
+      };
+    },
+    explain: async () => ({
+      summary: "A grounded night.",
+      items: [
+        { entity_id: "v1", name: "Jazz Club", reason: "Because Radiohead.", cited_inputs: ["Radiohead"] },
+        { name: "Invented Bistro", reason: "Skip.", cited_inputs: ["ramen"] },
+      ],
+    }),
+  });
+  assert.equal(response.status, 200);
+  assert.equal(response.body.items[0].name, "Jazz Club");
+  assert.deepEqual(response.body.trace, [
+    "Resolved Radiohead → chose artist",
+    "Resolved ramen → searched food tags, chose Ramen",
+    "Resolved Amélie → chose movie",
+    "Called recommend for places in Lisbon",
+    "Filtered 1 non-venue",
+    "Dropped 1 name Qloo did not return",
+  ]);
 });
 
 test("fallback itinerary uses the Qloo list", () => {

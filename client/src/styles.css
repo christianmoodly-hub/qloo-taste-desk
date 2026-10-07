@@ -282,6 +282,25 @@ textarea {
   color: var(--muted);
 }
 
+.trace-label {
+  margin: 16px 0 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--violet);
+}
+
+.trace {
+  margin: 8px 0 0;
+  padding: 0 0 0 1.15rem;
+  display: grid;
+  gap: 6px;
+}
+
+.trace li {
+  padding-left: 2px;
+}
+
 button {
   margin-top: 16px;
   border: 0;

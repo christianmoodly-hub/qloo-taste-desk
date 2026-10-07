@@ -1,5 +1,5 @@
 import { draftUngrounded, explainWithGemini } from "./gemini.js";
-import { TARGETS, candidatesFrom, chooseCandidate, entityFromDescribe, fallbackItinerary, filterItinerary, selectRecommendations } from "./itinerary.js";
+import { TARGETS, candidatesFrom, chooseCandidate, droppedNonVenueCount, entityFromDescribe, fallbackItinerary, filterItinerary, selectRecommendations } from "./itinerary.js";
 import { savedPreset } from "./presets.js";
 
 function cleanList(values) {
@@ -60,24 +60,63 @@ async function mapPool(items, limit, worker) {
   return results;
 }
 
+function resolvedEntity(favorite, entity, id) {
+  return {
+    kind: "entity",
+    input: favorite,
+    name: entity.name,
+    entity_id: id,
+    type: entity.type || null,
+  };
+}
+
+function choiceLabel(type) {
+  const label = String(type || "").split(":").filter(Boolean).pop() || "";
+  return label.replace(/_/g, " ");
+}
+
+function resolvedLine(item) {
+  if (item?.kind === "tag") return `Resolved ${item.input} → searched food tags, chose ${item.name}`;
+  const label = choiceLabel(item?.type);
+  return label
+    ? `Resolved ${item.input} → chose ${label}`
+    : `Resolved ${item.input} → chose ${item.name}`;
+}
+
+function recommendLine(target, city) {
+  const domain = target === "place" ? "places" : `${target}s`;
+  const where = typeof city === "string" && city.trim() ? ` in ${city.trim()}` : "";
+  return `Called recommend for ${domain}${where}`;
+}
+
+export function planTrace({ resolved, target, city, droppedVenues = 0, droppedNames = 0 }) {
+  const lines = (resolved || []).filter(Boolean).map(resolvedLine);
+  lines.push(recommendLine(target, city));
+  if (droppedVenues === 1) lines.push("Filtered 1 non-venue");
+  else if (droppedVenues > 1) lines.push(`Filtered ${droppedVenues} non-venues`);
+  if (droppedNames === 1) lines.push("Dropped 1 name Qloo did not return");
+  else if (droppedNames > 1) lines.push(`Dropped ${droppedNames} names Qloo did not return`);
+  return lines;
+}
+
 async function resolveFavorite(favorite, execute) {
   const described = await execute({ operation: "describe", input: { entity: favorite } });
   const direct = entityFromDescribe(described);
   if (direct?.entity_id && !String(direct.type || "").includes(":place")) {
-    return { kind: "entity", input: favorite, name: direct.name, entity_id: direct.entity_id };
+    return resolvedEntity(favorite, direct, direct.entity_id);
   }
 
   const candidate = chooseCandidate(candidatesFrom(described), favorite);
   if (candidate && !String(candidate.type).includes(":place")) {
-    return { kind: "entity", input: favorite, name: candidate.name, entity_id: candidate.id };
+    return resolvedEntity(favorite, candidate, candidate.id);
   }
 
   const tags = await execute({ operation: "find_tags", input: { query: favorite, limit: 5 } });
   const tag = (tags.body?.result?.results || []).find((item) => /cuisine|food|dish|ingredient|genre/i.test(String(item?.type || "")));
   if (tag?.id) return { kind: "tag", input: favorite, name: tag.name, entity_id: tag.id };
 
-  if (direct?.entity_id) return { kind: "entity", input: favorite, name: direct.name, entity_id: direct.entity_id };
-  if (candidate) return { kind: "entity", input: favorite, name: candidate.name, entity_id: candidate.id };
+  if (direct?.entity_id) return resolvedEntity(favorite, direct, direct.entity_id);
+  if (candidate) return resolvedEntity(favorite, candidate, candidate.id);
   return null;
 }
 
@@ -122,7 +161,21 @@ export async function planTaste({
 
   if (!fresh) {
     const saved = loadSaved({ favorites, target, city });
-    if (saved) return { status: 200, body: { ...saved, mode: "qloo", grounded: true } };
+    if (saved) {
+      return {
+        status: 200,
+        body: {
+          ...saved,
+          mode: "qloo",
+          grounded: true,
+          trace: planTrace({
+            resolved: saved.resolved,
+            target: saved.target || target,
+            city: saved.city || city,
+          }),
+        },
+      };
+    }
   }
 
   const described = await mapPool(favorites, 2, (favorite) => resolveFavorite(favorite, execute));
@@ -183,10 +236,9 @@ export async function planTaste({
     };
   }
 
-  const results = selectRecommendations(
-    Array.isArray(envelope.results) ? envelope.results : [],
-    target,
-  );
+  const recommendedResults = Array.isArray(envelope.results) ? envelope.results : [];
+  const results = selectRecommendations(recommendedResults, target);
+  const droppedVenues = droppedNonVenueCount(recommendedResults, target);
   if (results.length === 0) {
     return {
       status: 404,
@@ -202,9 +254,12 @@ export async function planTaste({
   let explained = false;
   let summary = "";
   let items = [];
+  let droppedNames = 0;
   try {
     const drafted = await explain({ favorites, city, target, results });
-    items = filterItinerary({ results, favorites, items: drafted.items });
+    const draftedItems = Array.isArray(drafted.items) ? drafted.items : [];
+    items = filterItinerary({ results, favorites, items: draftedItems });
+    droppedNames = Math.max(0, draftedItems.length - items.length);
     summary = drafted.summary;
     explained = items.length > 0;
   } catch {
@@ -229,6 +284,7 @@ export async function planTaste({
       city: city || null,
       resolved,
       unresolved,
+      trace: planTrace({ resolved, target, city, droppedVenues, droppedNames }),
       items,
       qloo_count: results.length,
       explained,

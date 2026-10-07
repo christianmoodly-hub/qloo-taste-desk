@@ -70,6 +70,16 @@ function PlanColumn({ title, plan, pending, empty, kind }) {
       {!pending && plan ? (
         <>
           <p className="summary">{plan.summary}</p>
+          {Array.isArray(plan.trace) && plan.trace.length > 0 ? (
+            <>
+              <p className="trace-label">Agent trace</p>
+              <ol className="trace">
+                {plan.trace.map((line, index) => (
+                  <li key={`${index}-${line}`}>{line}</li>
+                ))}
+              </ol>
+            </>
+          ) : null}
           {plan.grounded === false ? (
             <p className="hint">These names were not checked against Qloo. Closed or invented places can appear here.</p>
           ) : null}
