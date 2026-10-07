@@ -30,7 +30,11 @@ try {
     });
     const body = await response.json();
     const text = redactSecrets(JSON.stringify(body, null, 2));
-    if (text.includes(process.env.QLOO_API_KEY || "___no_qloo_key___") || text.includes(process.env.GEMINI_API_KEY || "___no_gemini_key___")) {
+    if (
+      text.includes(process.env.QLOO_API_KEY || "___no_qloo_key___")
+      || text.includes(process.env.GEMINI_API_KEY || "___no_gemini_key___")
+      || text.includes(process.env.GROQ_API_KEY || "___no_groq_key___")
+    ) {
       throw new Error(`${operation} sample still contains a credential`);
     }
     await writeFile(path.join(samplesDir, `${operation}.json`), `${text}\n`);

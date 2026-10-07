@@ -52,6 +52,10 @@ export function savedPreset({ favorites, target, city }) {
   if (!match) return null;
   const file = path.join(presetDir, `${match.id}.json`);
   if (!existsSync(file)) return null;
-  const saved = JSON.parse(readFileSync(file, "utf8"));
-  return { ...saved, preset: true, cached: true, preset_id: match.id };
+  try {
+    const saved = JSON.parse(readFileSync(file, "utf8"));
+    return { ...saved, preset: true, cached: true, preset_id: match.id };
+  } catch {
+    return null;
+  }
 }

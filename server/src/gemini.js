@@ -19,7 +19,9 @@ function failed(detail) {
 }
 
 function parsedExplanation(text) {
-  const parsed = JSON.parse(stripFences(text));
+  const cleaned = stripFences(text || "");
+  if (!cleaned) throw failed("The model returned an empty explanation.");
+  const parsed = JSON.parse(cleaned);
   return {
     summary: typeof parsed.summary === "string" ? parsed.summary.slice(0, 400) : "",
     items: Array.isArray(parsed.items) ? parsed.items : [],

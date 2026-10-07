@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { TasteInterview } from "./TasteInterview.jsx";
 
 const FALLBACK_OPERATIONS = [
   {
@@ -34,7 +35,20 @@ function errorMessage(body, status, fallback) {
   if (code === "QLOO_AUTH") {
     return "Qloo rejected the server key. Saved presets still open if they were stored with the deploy.";
   }
+  if (status === 502 || status === 504) {
+    return body?.error?.message || "The plan request timed out or the API restarted. Try again, or open a saved preset.";
+  }
   return body?.error?.message || fallback;
+}
+
+async function readJson(response) {
+  const text = await response.text();
+  if (!text) return {};
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { ok: false, error: { code: "BAD_RESPONSE", message: "The server returned an unreadable reply." } };
+  }
 }
 
 function PlanColumn({ title, plan, pending, empty, kind }) {
@@ -49,8 +63,8 @@ function PlanColumn({ title, plan, pending, empty, kind }) {
       </div>
       {pending ? (
         <div className="loading">
-          <p>{kind === "plain" ? "Asking the model on its own." : "Asking Qloo for a grounded plan."}</p>
-          <p className="hint">A free host can take 30–60 seconds to wake the first time. Saved presets skip that wait.</p>
+          <p>{kind === "plain" ? "Writing a comparison." : "Asking Qloo for a grounded plan."}</p>
+          <p className="hint">Still working. Writing the reasons can take a little longer.</p>
         </div>
       ) : null}
       {!pending && plan ? (
@@ -141,17 +155,13 @@ export function App() {
     };
   }, []);
 
-  function updateFavorite(index, value) {
-    setFavorites((current) => current.map((item, itemIndex) => (itemIndex === index ? value : item)));
-  }
-
   async function requestPlan(planMode, payload) {
     const result = await fetch("/api/plan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ ...payload, mode: planMode }),
     });
-    const body = await result.json();
+    const body = await readJson(result);
     if (!result.ok || body.ok === false) {
       const failure = new Error(errorMessage(body, result.status, "That plan could not be built."));
       failure.code = body.error?.code;
@@ -239,9 +249,10 @@ export function App() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ operation, input }),
       });
-      const body = await result.json();
+      const body = await readJson(result);
       if (!result.ok || body.ok === false) {
         setWorkflowError(errorMessage(body, result.status, "That workflow failed."));
+        return;
       }
       setWorkflow(body);
     } catch {
@@ -269,86 +280,24 @@ export function App() {
       </header>
 
       <main className={showQloo && showPlain ? "layout compare" : "layout"}>
-        <form className="panel" onSubmit={onPlan}>
-          <div className="status-row">
-            <span className={health?.credentialConfigured ? "pill ready" : "pill"}>{credentialLabel}</span>
-            <span className="hint">Keys stay on the server.</span>
-          </div>
-
-          {presets.length > 0 ? (
-            <div className="presets">
-              <p className="hint">Saved demos</p>
-              <div className="status-row">
-                {presets.map((preset) => (
-                  <button
-                    key={preset.id}
-                    type="button"
-                    className="preset"
-                    onClick={() => onPlan(null, { ...preset, mode: "qloo" })}
-                    disabled={pending}
-                  >
-                    {preset.label}{preset.ready ? " · instant" : ""}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          <label>Favorites</label>
-          <div className="favorites">
-            {favorites.map((favorite, index) => (
-              <input
-                key={index}
-                aria-label={`Favorite ${index + 1}`}
-                value={favorite}
-                onChange={(event) => updateFavorite(index, event.target.value)}
-                placeholder="A band, film, dish, or brand"
-              />
-            ))}
-          </div>
-          {favorites.length < 5 ? (
-            <button type="button" className="text-button" onClick={() => setFavorites((current) => [...current, ""])}>
-              Add another
-            </button>
-          ) : null}
-
-          <label htmlFor="target">Looking for</label>
-          <select id="target" value={target} onChange={(event) => setTarget(event.target.value)}>
-            {TARGETS.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-
-          <label htmlFor="city">City</label>
-          <input id="city" value={city} onChange={(event) => setCity(event.target.value)} placeholder="Optional, used for places" />
-
-          <label>Answer</label>
-          <div className="modes" role="radiogroup" aria-label="Answer source">
-            {MODES.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                role="radio"
-                aria-checked={mode === item.id}
-                className={mode === item.id ? "mode selected" : "mode"}
-                onClick={() => setMode(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          <button type="submit" disabled={pending}>
-            {pending ? "Building the plan" : "Build the plan"}
-          </button>
-          <p className="hint wait-note">The first live plan can take a minute. A saved preset returns immediately.</p>
-          {error ? <p className="form-error">{error}</p> : null}
-          {health && health.ok === false ? (
-            <p className="hint">The host may still be waking. Refresh in a minute.</p>
-          ) : null}
-        </form>
+        <TasteInterview
+          favorites={favorites}
+          setFavorites={setFavorites}
+          target={target}
+          setTarget={setTarget}
+          city={city}
+          setCity={setCity}
+          mode={mode}
+          setMode={setMode}
+          targets={TARGETS}
+          modes={MODES}
+          presets={presets}
+          pending={pending}
+          error={error}
+          health={health}
+          credentialLabel={credentialLabel}
+          onPlan={onPlan}
+        />
 
         {showQloo ? (
           <PlanColumn

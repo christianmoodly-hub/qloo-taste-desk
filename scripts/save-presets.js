@@ -14,6 +14,7 @@ mkdirSync(dir, { recursive: true });
 const executor = createExecutor();
 const qlooKey = process.env.QLOO_API_KEY || "";
 const geminiKey = process.env.GEMINI_API_KEY || "";
+const groqKey = process.env.GROQ_API_KEY || "";
 
 for (const preset of PRESETS) {
   const response = await planTaste({
@@ -30,7 +31,7 @@ for (const preset of PRESETS) {
     continue;
   }
   const text = `${JSON.stringify(response.body, null, 2)}\n`;
-  if ((qlooKey && text.includes(qlooKey)) || (geminiKey && text.includes(geminiKey))) {
+  if ((qlooKey && text.includes(qlooKey)) || (geminiKey && text.includes(geminiKey)) || (groqKey && text.includes(groqKey))) {
     console.error(`${preset.id} contained a credential, so it was not written`);
     process.exitCode = 1;
     continue;

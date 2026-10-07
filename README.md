@@ -41,18 +41,20 @@ Set these on the server only. The names are the whole contract; values stay out 
 | Name | Role |
 | --- | --- |
 | `QLOO_API_KEY` | Server credential for `qloo exec` |
-| `GEMINI_API_KEY` | Explains Qloo results, or drafts the ungrounded comparison |
+| `GEMINI_API_KEY` | Explains Qloo results with `gemini-3.8-flash`, the highest free Gemini model |
+| `GROQ_API_KEY` | Server-only fallback if Gemini cannot answer. The page keeps its loading state |
 | `QLOO_BASE_URL` | Hackathon gateway, `https://hackathon.api.qloo.com` |
 | `QLOO_TRUSTED_BASE_URL` | Must equal `QLOO_BASE_URL` or the harness will not send the key |
 | `HOST` | `127.0.0.1` locally, `0.0.0.0` on Render |
 | `PORT` | Defaults to `8787` |
-| `GEMINI_MODEL` | Optional. Otherwise the server tries `gemini-3.8-flash`, then `gemini-3.7-flash` |
+| `GEMINI_MODEL` | Optional. Defaults to `gemini-3.8-flash`, then `gemini-3.7-flash` |
+| `GROQ_MODEL` | Optional. Defaults to `openai/gpt-oss-120b`, then `openai/gpt-oss-20b` |
 
 ## Deploy
 
 [render.yaml](render.yaml) is a Render web service on Node `22.19.0`. The build installs workspaces, including `@qloo/qloo-harness`, then builds the client. Start with `npm start`. `HOST` is `0.0.0.0`. The blueprint sets `QLOO_BASE_URL` and `QLOO_TRUSTED_BASE_URL` to the hackathon gateway.
 
-In the Render dashboard, set `QLOO_API_KEY` and `GEMINI_API_KEY`. Do not commit them. A missing gateway URL is the usual cause of `QLOO_AUTH` after deploy. The free instance can take 30–60 seconds to wake; the page says so, and the saved presets skip the wait.
+In the Render dashboard, set `QLOO_API_KEY`, `GEMINI_API_KEY`, and `GROQ_API_KEY`. Do not commit them. A missing gateway URL is the usual cause of `QLOO_AUTH` after deploy. The free instance can take 30–60 seconds to wake; the page says so, and the saved presets skip the wait.
 
 ```sh
 npm run presets
