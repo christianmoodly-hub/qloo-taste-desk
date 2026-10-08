@@ -1,0 +1,302 @@
+{
+  "ok": true,
+  "operation": "where_popular",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "where_popular",
+    "status": "ok",
+    "interpretation": {
+      "entity": {
+        "input": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+        "entityId": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+        "name": "Radiohead",
+        "type": "urn:entity:artist",
+        "match": "identifier"
+      },
+      "within": "Johannesburg"
+    },
+    "resolution": {
+      "contract_version": "1.0-preview.1",
+      "provider": {
+        "contract_version": "1.0-preview.1",
+        "provider_id": "qloo_api",
+        "name": "Qloo native resolution",
+        "entity_strategy": "exact_name_context_or_choice",
+        "tag_strategy": "target_scoped_semantic_search_exact_name_or_choice",
+        "remote": true,
+        "uses_model": false,
+        "fallback": "none"
+      },
+      "outcomes": [
+        {
+          "input": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+            "name": "Radiohead",
+            "type": "urn:entity:artist",
+            "popularity": 0.9999966263060412,
+            "description": "Radiohead is an English rock band known for their innovative and experimental approach to music."
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [
+      {
+        "location": {
+          "latitude": -26.024551,
+          "longitude": 28.01033,
+          "geohash": "ke7gvqk"
+        },
+        "query": {
+          "affinity": 1,
+          "affinity_rank": 0.593207,
+          "popularity": 1,
+          "entity_artist_affinity_rank": 0.593207,
+          "entity_artist_affinity": 1
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.024551,
+          "longitude": 28.01445,
+          "geohash": "ke7gvqr"
+        },
+        "query": {
+          "affinity": 0.9230769230769231,
+          "affinity_rank": 0.530991,
+          "popularity": 0.9230769230769231,
+          "entity_artist_affinity_rank": 0.530991,
+          "entity_artist_affinity": 0.9230769230769231
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.050644,
+          "longitude": 28.033676,
+          "geohash": "ke7gvct"
+        },
+        "query": {
+          "affinity": 0.8461538461538461,
+          "affinity_rank": 0.388021,
+          "popularity": 0.8461538461538461,
+          "entity_artist_affinity_rank": 0.388021,
+          "entity_artist_affinity": 0.8461538461538461
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.024551,
+          "longitude": 28.013077,
+          "geohash": "ke7gvqq"
+        },
+        "query": {
+          "affinity": 0.7692307692307693,
+          "affinity_rank": 0.341181,
+          "popularity": 0.7692307692307693,
+          "entity_artist_affinity_rank": 0.341181,
+          "entity_artist_affinity": 0.7692307692307693
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.035538,
+          "longitude": 28.011703,
+          "geohash": "ke7gvkm"
+        },
+        "query": {
+          "affinity": 0.6923076923076923,
+          "affinity_rank": 0.253314,
+          "popularity": 0.6923076923076923,
+          "entity_artist_affinity_rank": 0.253314,
+          "entity_artist_affinity": 0.6923076923076923
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.058884,
+          "longitude": 28.059769,
+          "geohash": "ke7gy80"
+        },
+        "query": {
+          "affinity": 0.6153846153846154,
+          "affinity_rank": 0.22381,
+          "popularity": 0.5384615384615384,
+          "entity_artist_affinity_rank": 0.22381,
+          "entity_artist_affinity": 0.6153846153846154
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.063004,
+          "longitude": 28.025436,
+          "geohash": "ke7gtxr"
+        },
+        "query": {
+          "affinity": 0.5384615384615384,
+          "affinity_rank": 0.187476,
+          "popularity": 0.6153846153846154,
+          "entity_artist_affinity_rank": 0.187476,
+          "entity_artist_affinity": 0.5384615384615384
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.05339,
+          "longitude": 28.02269,
+          "geohash": "ke7gv9j"
+        },
+        "query": {
+          "affinity": 0.46153846153846156,
+          "affinity_rank": 0.163154,
+          "popularity": 0.46153846153846156,
+          "entity_artist_affinity_rank": 0.163154,
+          "entity_artist_affinity": 0.46153846153846156
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.017685,
+          "longitude": 28.01445,
+          "geohash": "ke7gvrx"
+        },
+        "query": {
+          "affinity": 0.38461538461538464,
+          "affinity_rank": 0.161836,
+          "popularity": 0.23076923076923078,
+          "entity_artist_affinity_rank": 0.161836,
+          "entity_artist_affinity": 0.38461538461538464
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.042404,
+          "longitude": 28.058395,
+          "geohash": "ke7gy7p"
+        },
+        "query": {
+          "affinity": 0.3076923076923077,
+          "affinity_rank": 0.142082,
+          "popularity": 0.23076923076923078,
+          "entity_artist_affinity_rank": 0.142082,
+          "entity_artist_affinity": 0.3076923076923077
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.021805,
+          "longitude": 28.015823,
+          "geohash": "ke7gvwb"
+        },
+        "query": {
+          "affinity": 0.23076923076923078,
+          "affinity_rank": 0.141961,
+          "popularity": 0.23076923076923078,
+          "entity_artist_affinity_rank": 0.141961,
+          "entity_artist_affinity": 0.23076923076923078
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.043777,
+          "longitude": 28.032303,
+          "geohash": "ke7gvfu"
+        },
+        "query": {
+          "affinity": 0.15384615384615385,
+          "affinity_rank": 0.086758,
+          "popularity": 0.15384615384615385,
+          "entity_artist_affinity_rank": 0.086758,
+          "entity_artist_affinity": 0.15384615384615385
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.05339,
+          "longitude": 28.019943,
+          "geohash": "ke7gv95"
+        },
+        "query": {
+          "affinity": 0.07692307692307693,
+          "affinity_rank": 0.08452,
+          "popularity": 0.07692307692307693,
+          "entity_artist_affinity_rank": 0.08452,
+          "entity_artist_affinity": 0.07692307692307693
+        }
+      },
+      {
+        "location": {
+          "latitude": -26.056137,
+          "longitude": 28.062515,
+          "geohash": "ke7gy8d"
+        },
+        "query": {
+          "affinity": 0,
+          "affinity_rank": 0.041992,
+          "popularity": 0,
+          "entity_artist_affinity_rank": 0.041992,
+          "entity_artist_affinity": 0
+        }
+      }
+    ],
+    "result_count": 14,
+    "provenance": {
+      "source": "Qloo API",
+      "endpoint": "/v2/insights",
+      "documentation": "https://docs.qloo.com/reference/heatmaps-use-case",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/v2/insights",
+          "query": {
+            "filter.type": "urn:heatmap",
+            "signal.interests.entities": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+            "filter.location.query": "Johannesburg",
+            "take": 20
+          }
+        }
+      ],
+      "transport": "direct"
+    },
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "where_popular",
+      "job": "where_popular",
+      "signals": {},
+      "filters": {
+        "location": "Johannesburg"
+      },
+      "operators": {},
+      "output": {
+        "limit": 20
+      },
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "artist",
+        "entities": [
+          "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-1dd674da-67ff-4b18-bc10-db1e5e1d328b",
+      "duration_ms": 2390
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

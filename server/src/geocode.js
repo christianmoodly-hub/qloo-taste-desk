@@ -32,25 +32,3 @@ async function lookup(query) {
 export function geocodePlaces(queries) {
   return Promise.all(normalizeQueries(queries).map((query) => lookup(query).catch(() => null)));
 }
-
-const reverseCache = new Map();
-
-export async function reverseLocality(lat, lng) {
-  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return "";
-  const key = `${lat.toFixed(2)},${lng.toFixed(2)}`;
-  if (reverseCache.has(key)) return reverseCache.get(key);
-  const url = new URL("https://photon.komoot.io/reverse");
-  url.searchParams.set("lat", String(lat));
-  url.searchParams.set("lon", String(lng));
-  const response = await fetch(url, {
-    headers: { "user-agent": "TasteDesk/1.0 (qloo hackathon demo)", accept: "application/json" },
-  });
-  if (!response.ok) return "";
-  const body = await response.json();
-  const properties = body?.features?.[0]?.properties || {};
-  const name = [properties.city, properties.town, properties.village, properties.county, properties.state, properties.name]
-    .find((value) => typeof value === "string" && value.trim());
-  const label = name ? name.trim() : "";
-  if (label) reverseCache.set(key, label);
-  return label;
-}

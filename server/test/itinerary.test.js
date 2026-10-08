@@ -187,8 +187,8 @@ test("plan trace records resolve, tags, recommend, and drops", async () => {
   });
   assert.equal(response.status, 200);
   assert.equal(response.body.items[0].name, "Jazz Club");
-  assert.equal(response.body.taste_map.country, "Portugal");
-  assert.deepEqual(response.body.taste_map.clusters, []);
+  assert.equal(response.body.taste_map, undefined);
+  assert.equal(response.body.taste_tags, undefined);
   assert.deepEqual(response.body.trace, [
     "Resolved Radiohead → chose artist",
     "Resolved ramen → searched food tags, chose Ramen",
@@ -196,9 +196,12 @@ test("plan trace records resolve, tags, recommend, and drops", async () => {
     "Called recommend for places in Lisbon",
     "Filtered 1 non-venue",
     "Dropped 1 name Qloo did not return",
-    "Skipped Radiohead for the taste map",
+    "No heatmap for Radiohead in Lisbon",
     "Skipped ramen for the taste map",
-    "Skipped Amélie for the taste map",
+    "No heatmap for Amélie in Lisbon",
+    "Skipped Radiohead taste tags",
+    "Skipped ramen taste tags",
+    "Skipped Amélie taste tags",
   ]);
 });
 

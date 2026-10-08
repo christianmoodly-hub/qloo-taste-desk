@@ -1,0 +1,387 @@
+{
+  "ok": true,
+  "operation": "where_popular",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "where_popular",
+    "status": "ok",
+    "interpretation": {
+      "entity": {
+        "input": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+        "entityId": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+        "name": "Amélie",
+        "type": "urn:entity:movie",
+        "match": "identifier"
+      },
+      "within": "Lisbon"
+    },
+    "resolution": {
+      "contract_version": "1.0-preview.1",
+      "provider": {
+        "contract_version": "1.0-preview.1",
+        "provider_id": "qloo_api",
+        "name": "Qloo native resolution",
+        "entity_strategy": "exact_name_context_or_choice",
+        "tag_strategy": "target_scoped_semantic_search_exact_name_or_choice",
+        "remote": true,
+        "uses_model": false,
+        "fallback": "none"
+      },
+      "outcomes": [
+        {
+          "input": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+            "name": "Amélie",
+            "type": "urn:entity:movie",
+            "popularity": 0.9990496555001188,
+            "description": "Amélie (Le Fabuleux Destin d'Amélie Poulain) is a 2001 romantic comedy directed by Jean-Pierre Jeunet, with a US release on 2002-02-08. Starring Audrey Tautou, Mathieu Kassovitz, and Rufus, the film follows a shy, imaginative Parisian waitress who secretly engineers small acts of kindness that ripple through her neighborhood. Stylistically distinctive and narratively character-driven, it blends whimsical visual flourishes with themes of loneliness, connection, and the search for love, producing ",
+            "release_year": 2001
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [
+      {
+        "location": {
+          "latitude": 38.9328,
+          "longitude": -9.212036,
+          "geohash": "eycmqr"
+        },
+        "query": {
+          "affinity": 1,
+          "affinity_rank": 0.990909090909091,
+          "popularity": 0.23655913978494625,
+          "entity_movie_affinity_rank": 0.990909090909091,
+          "entity_movie_affinity": 1
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.735046,
+          "longitude": -9.475708,
+          "geohash": "eyck27"
+        },
+        "query": {
+          "affinity": 0.989247311827957,
+          "affinity_rank": 0.987192118226601,
+          "popularity": 0.5376344086021505,
+          "entity_movie_affinity_rank": 0.987192118226601,
+          "entity_movie_affinity": 0.989247311827957
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.800964,
+          "longitude": -9.486694,
+          "geohash": "eyck8p"
+        },
+        "query": {
+          "affinity": 0.978494623655914,
+          "affinity_rank": 0.9845047039291643,
+          "popularity": 0.41935483870967744,
+          "entity_movie_affinity_rank": 0.9845047039291643,
+          "entity_movie_affinity": 0.978494623655914
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.800964,
+          "longitude": -9.442749,
+          "geohash": "eyck9p"
+        },
+        "query": {
+          "affinity": 0.967741935483871,
+          "affinity_rank": 0.9840153452685422,
+          "popularity": 0.053763440860215055,
+          "entity_movie_affinity_rank": 0.9840153452685422,
+          "entity_movie_affinity": 0.967741935483871
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.800964,
+          "longitude": -9.376831,
+          "geohash": "eyckdx"
+        },
+        "query": {
+          "affinity": 0.956989247311828,
+          "affinity_rank": 0.9829710144927536,
+          "popularity": 0.5268817204301075,
+          "entity_movie_affinity_rank": 0.9829710144927536,
+          "entity_movie_affinity": 0.956989247311828
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.718567,
+          "longitude": -9.1241455,
+          "geohash": "eycs22"
+        },
+        "query": {
+          "affinity": 0.946236559139785,
+          "affinity_rank": 0.9810956790123457,
+          "popularity": 0.6344086021505376,
+          "entity_movie_affinity_rank": 0.9810956790123457,
+          "entity_movie_affinity": 0.946236559139785
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.74054,
+          "longitude": -9.234009,
+          "geohash": "eyckmu"
+        },
+        "query": {
+          "affinity": 0.9354838709677419,
+          "affinity_rank": 0.9796764827872252,
+          "popularity": 0.6666666666666666,
+          "entity_movie_affinity_rank": 0.9796764827872252,
+          "entity_movie_affinity": 0.9354838709677419
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.702087,
+          "longitude": -9.420776,
+          "geohash": "eyck1t"
+        },
+        "query": {
+          "affinity": 0.9247311827956989,
+          "affinity_rank": 0.9789819376026273,
+          "popularity": 0.7096774193548387,
+          "entity_movie_affinity_rank": 0.9789819376026273,
+          "entity_movie_affinity": 0.9247311827956989
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.713074,
+          "longitude": -9.179077,
+          "geohash": "eyckpp"
+        },
+        "query": {
+          "affinity": 0.9139784946236559,
+          "affinity_rank": 0.9784172661870504,
+          "popularity": 0.6129032258064516,
+          "entity_movie_affinity_rank": 0.9784172661870504,
+          "entity_movie_affinity": 0.9139784946236559
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.79547,
+          "longitude": -9.420776,
+          "geohash": "eyck9w"
+        },
+        "query": {
+          "affinity": 0.9032258064516129,
+          "affinity_rank": 0.9771706586826348,
+          "popularity": 0.5376344086021505,
+          "entity_movie_affinity_rank": 0.9771706586826348,
+          "entity_movie_affinity": 0.9032258064516129
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.762512,
+          "longitude": -9.190063,
+          "geohash": "eyckwb"
+        },
+        "query": {
+          "affinity": 0.8924731182795699,
+          "affinity_rank": 0.9752727272727273,
+          "popularity": 0.11827956989247312,
+          "entity_movie_affinity_rank": 0.9752727272727273,
+          "entity_movie_affinity": 0.8924731182795699
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.70758,
+          "longitude": -9.20105,
+          "geohash": "eycknw"
+        },
+        "query": {
+          "affinity": 0.8817204301075269,
+          "affinity_rank": 0.9748975409836066,
+          "popularity": 0.5053763440860215,
+          "entity_movie_affinity_rank": 0.9748975409836066,
+          "entity_movie_affinity": 0.8817204301075269
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.702087,
+          "longitude": -9.398804,
+          "geohash": "eyck4j"
+        },
+        "query": {
+          "affinity": 0.8709677419354839,
+          "affinity_rank": 0.9745308310991957,
+          "popularity": 0.5376344086021505,
+          "entity_movie_affinity_rank": 0.9745308310991957,
+          "entity_movie_affinity": 0.8709677419354839
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.72406,
+          "longitude": -9.1571045,
+          "geohash": "eyckr9"
+        },
+        "query": {
+          "affinity": 0.8602150537634409,
+          "affinity_rank": 0.9739819004524887,
+          "popularity": 0.7204301075268817,
+          "entity_movie_affinity_rank": 0.9739819004524887,
+          "entity_movie_affinity": 0.8602150537634409
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.72406,
+          "longitude": -9.398804,
+          "geohash": "eyck61"
+        },
+        "query": {
+          "affinity": 0.8494623655913979,
+          "affinity_rank": 0.9726678550207962,
+          "popularity": 0.41935483870967744,
+          "entity_movie_affinity_rank": 0.9726678550207962,
+          "entity_movie_affinity": 0.8494623655913979
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.6911,
+          "longitude": -9.365845,
+          "geohash": "eyck4g"
+        },
+        "query": {
+          "affinity": 0.8387096774193549,
+          "affinity_rank": 0.9720323182100684,
+          "popularity": 0.3655913978494624,
+          "entity_movie_affinity_rank": 0.9720323182100684,
+          "entity_movie_affinity": 0.8387096774193549
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.713074,
+          "longitude": -9.168091,
+          "geohash": "eyckpr"
+        },
+        "query": {
+          "affinity": 0.8279569892473119,
+          "affinity_rank": 0.9701789264413518,
+          "popularity": 0.6236559139784946,
+          "entity_movie_affinity_rank": 0.9701789264413518,
+          "entity_movie_affinity": 0.8279569892473119
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.70758,
+          "longitude": -9.179077,
+          "geohash": "eyckpn"
+        },
+        "query": {
+          "affinity": 0.8172043010752689,
+          "affinity_rank": 0.9672459893048129,
+          "popularity": 0.11827956989247312,
+          "entity_movie_affinity_rank": 0.9672459893048129,
+          "entity_movie_affinity": 0.8172043010752689
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.70758,
+          "longitude": -9.299927,
+          "geohash": "eyckhq"
+        },
+        "query": {
+          "affinity": 0.8064516129032258,
+          "affinity_rank": 0.9668777398928398,
+          "popularity": 0.25806451612903225,
+          "entity_movie_affinity_rank": 0.9668777398928398,
+          "entity_movie_affinity": 0.8064516129032258
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.70758,
+          "longitude": -9.168091,
+          "geohash": "eyckpq"
+        },
+        "query": {
+          "affinity": 0.7956989247311828,
+          "affinity_rank": 0.9668353007307476,
+          "popularity": 0.25806451612903225,
+          "entity_movie_affinity_rank": 0.9668353007307476,
+          "entity_movie_affinity": 0.7956989247311828
+        }
+      }
+    ],
+    "result_count": 20,
+    "provenance": {
+      "source": "Qloo API",
+      "endpoint": "/v2/insights",
+      "documentation": "https://docs.qloo.com/reference/heatmaps-use-case",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/v2/insights",
+          "query": {
+            "filter.type": "urn:heatmap",
+            "signal.interests.entities": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+            "filter.location.query": "Lisbon",
+            "take": 20
+          }
+        }
+      ],
+      "transport": "direct"
+    },
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "where_popular",
+      "job": "where_popular",
+      "signals": {},
+      "filters": {
+        "location": "Lisbon"
+      },
+      "operators": {},
+      "output": {
+        "limit": 20
+      },
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "movie",
+        "entities": [
+          "B7A0731F-EC92-496A-9C40-47D9770489B6"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-f1ef8890-1d1d-4e18-aaa2-7fc2e6ebc2b3",
+      "duration_ms": 2043
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

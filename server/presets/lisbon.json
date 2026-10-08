@@ -121,55 +121,126 @@
   "qloo_count": 6,
   "explained": false,
   "taste_map": {
-    "country": "Portugal",
-    "summary": "The strongest aggregate pattern in Portugal sits around Santo António da Charneca, then Porto.",
-    "clusters": [
+    "city": "Lisbon",
+    "summary": "Radiohead and Amélie fans both point toward São José.",
+    "favorites": [
       {
-        "latitude": 38.62037,
-        "longitude": -9.02332,
-        "weight": 5.9747,
-        "count": 6,
-        "sources": [
-          "Amélie",
-          "Radiohead"
-        ],
-        "label": "Santo António da Charneca"
+        "name": "Radiohead",
+        "color": "#2c241c",
+        "clusters": [
+          {
+            "latitude": 38.71719,
+            "longitude": -9.13237,
+            "weight": 3.98,
+            "count": 4,
+            "label": "Graça"
+          },
+          {
+            "latitude": 38.7185,
+            "longitude": -9.14612,
+            "weight": 2.931,
+            "count": 3,
+            "label": "São José"
+          }
+        ]
       },
       {
-        "latitude": 41.15478,
-        "longitude": -8.61332,
-        "weight": 1.9969,
-        "count": 2,
-        "sources": [
-          "Radiohead"
-        ],
-        "label": "Porto"
-      },
+        "name": "Amélie",
+        "color": "#c45c26",
+        "clusters": [
+          {
+            "latitude": 38.71867,
+            "longitude": -9.16249,
+            "weight": 1.6882,
+            "count": 2,
+            "label": "Amoreiras"
+          },
+          {
+            "latitude": 38.9328,
+            "longitude": -9.21204,
+            "weight": 1,
+            "count": 1,
+            "label": "Venda do Pinheiro e Santo Estêvão das Galés"
+          }
+        ]
+      }
+    ],
+    "overlaps": [
       {
-        "latitude": 37.41943,
-        "longitude": -8.81103,
-        "weight": 0.9959,
-        "count": 1,
-        "sources": [
+        "favorites": [
+          "Radiohead",
           "Amélie"
         ],
-        "label": "Aljezur"
-      },
-      {
-        "latitude": 37.85889,
-        "longitude": -25.81787,
-        "weight": 0.9835,
-        "count": 1,
-        "sources": [
-          "Amélie"
-        ],
-        "label": "Ponta Delgada"
+        "label": "São José"
       }
     ],
     "trace": [
-      "Called where_popular for Radiohead within Portugal",
-      "Called where_popular for Amélie within Portugal",
+      "Called where_popular for Radiohead within Lisbon",
+      "Called where_popular for Amélie within Lisbon",
       "Skipped ramen for the taste map"
+    ]
+  },
+  "taste_tags": {
+    "favorites": [
+      {
+        "name": "Radiohead",
+        "tags": [
+          {
+            "name": "surrealism",
+            "type": "urn:tag:keyword:media"
+          },
+          {
+            "name": "Cultivated",
+            "type": "urn:tag:audience:qloo"
+          },
+          {
+            "name": "Cerebral",
+            "type": "urn:tag:style:qloo"
+          },
+          {
+            "name": "Environmental Issues",
+            "type": "urn:tag:theme:qloo"
+          },
+          {
+            "name": "satire",
+            "type": "urn:tag:keyword:media"
+          }
+        ]
+      },
+      {
+        "name": "Amélie",
+        "tags": [
+          {
+            "name": "Feminism",
+            "type": "urn:tag:genre:qloo"
+          },
+          {
+            "name": "Magic Realism",
+            "type": "urn:tag:archetype:qloo"
+          },
+          {
+            "name": "Whimsical",
+            "type": "urn:tag:subgenre:qloo"
+          },
+          {
+            "name": "Optimistic",
+            "type": "urn:tag:audience:qloo"
+          },
+          {
+            "name": "Whimsy",
+            "type": "urn:tag:keyword:qloo"
+          },
+          {
+            "name": "Visually Lush",
+            "type": "urn:tag:style:qloo"
+          }
+        ]
+      }
+    ],
+    "trace": [
+      "Kept taste tags for Radiohead",
+      "Kept taste tags for Amélie",
+      "Skipped ramen taste tags"
     ]
   }
 }

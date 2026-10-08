@@ -5,7 +5,7 @@ import { auth, loadCloudDesk, saveCloudDesk } from "./firebase.js";
 import { CityMood } from "./CityMood.jsx";
 import { HomeDesk } from "./HomeDesk.jsx";
 import { JourneyMap } from "./JourneyMap.jsx";
-import { TasteMap } from "./TasteMap.jsx";
+import { TasteMap, TasteTags } from "./TasteMap.jsx";
 
 const FALLBACK_OPERATIONS = [
   {
@@ -519,7 +519,8 @@ export function App() {
           ) : null}
         </div>
         <CityMood city={city} />
-        {qlooPlan?.taste_map ? <TasteMap tasteMap={qlooPlan.taste_map} /> : null}
+        {qlooPlan?.taste_map?.favorites?.length ? <TasteMap tasteMap={qlooPlan.taste_map} /> : null}
+        {qlooPlan?.taste_tags?.favorites?.length ? <TasteTags tasteTags={qlooPlan.taste_tags} /> : null}
 
         <div className={qlooPlan ? "results" : "results single"}>
           <section className="venues" aria-live="polite">

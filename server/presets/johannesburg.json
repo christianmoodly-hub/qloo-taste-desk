@@ -106,53 +106,98 @@
   "qloo_count": 5,
   "explained": false,
   "taste_map": {
-    "country": "South Africa",
-    "summary": "The strongest aggregate pattern in South Africa sits around Somerset West, then 33.6°S, 22.6°E.",
-    "clusters": [
+    "city": "Johannesburg",
+    "summary": "Radiohead fans point toward Magaliessig.",
+    "favorites": [
       {
-        "latitude": -34.04582,
-        "longitude": 18.87314,
-        "weight": 4.9381,
-        "count": 5,
-        "sources": [
-          "Radiohead",
-          "Amélie"
-        ],
-        "label": "Somerset West"
-      },
+        "name": "Radiohead",
+        "color": "#2c241c",
+        "clusters": [
+          {
+            "latitude": -26.02455,
+            "longitude": 28.01253,
+            "weight": 2.6923,
+            "count": 3,
+            "label": "Magaliessig"
+          },
+          {
+            "latitude": -26.05064,
+            "longitude": 28.03368,
+            "weight": 0.8462,
+            "count": 1,
+            "label": "Lyme Park"
+          }
+        ]
+      }
+    ],
+    "overlaps": [],
+    "trace": [
+      "Called where_popular for Radiohead within Johannesburg",
+      "No heatmap for Amélie in Johannesburg",
+      "Skipped ramen for the taste map"
+    ]
+  },
+  "taste_tags": {
+    "favorites": [
       {
-        "latitude": -33.60646,
-        "longitude": 22.56255,
-        "weight": 2.9381,
-        "count": 3,
-        "sources": [
-          "Radiohead",
-          "Amélie"
+        "name": "Radiohead",
+        "tags": [
+          {
+            "name": "surrealism",
+            "type": "urn:tag:keyword:media"
+          },
+          {
+            "name": "Cultivated",
+            "type": "urn:tag:audience:qloo"
+          },
+          {
+            "name": "Cerebral",
+            "type": "urn:tag:style:qloo"
+          },
+          {
+            "name": "Environmental Issues",
+            "type": "urn:tag:theme:qloo"
+          },
+          {
+            "name": "satire",
+            "type": "urn:tag:keyword:media"
+          }
         ]
       },
       {
-        "latitude": -25.04883,
-        "longitude": 31.46484,
-        "weight": 0.9933,
-        "count": 1,
-        "sources": [
-          "Radiohead"
-        ]
-      },
-      {
-        "latitude": -32.25586,
-        "longitude": 24.43359,
-        "weight": 0.9355,
-        "count": 1,
-        "sources": [
-          "Amélie"
+        "name": "Amélie",
+        "tags": [
+          {
+            "name": "Feminism",
+            "type": "urn:tag:genre:qloo"
+          },
+          {
+            "name": "Magic Realism",
+            "type": "urn:tag:archetype:qloo"
+          },
+          {
+            "name": "Whimsical",
+            "type": "urn:tag:subgenre:qloo"
+          },
+          {
+            "name": "Optimistic",
+            "type": "urn:tag:audience:qloo"
+          },
+          {
+            "name": "Whimsy",
+            "type": "urn:tag:keyword:qloo"
+          },
+          {
+            "name": "Visually Lush",
+            "type": "urn:tag:style:qloo"
+          }
         ]
       }
     ],
     "trace": [
-      "Called where_popular for Radiohead within South Africa",
-      "Called where_popular for Amélie within South Africa",
-      "Skipped ramen for the taste map"
+      "Kept taste tags for Radiohead",
+      "Kept taste tags for Amélie",
+      "Skipped ramen taste tags"
     ]
   }
 }
