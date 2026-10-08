@@ -6,20 +6,20 @@ const presetDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "../pr
 
 export const PRESETS = [
   {
-    id: "johannesburg",
-    label: "Johannesburg night",
-    blurb: "Radiohead, Amélie, and ramen, as places.",
-    favorites: ["Radiohead", "Amélie", "ramen"],
-    target: "place",
-    city: "Johannesburg",
-  },
-  {
     id: "lisbon",
     label: "Lisbon afternoon",
     blurb: "The same favorites, in Lisbon.",
     favorites: ["Radiohead", "Amélie", "ramen"],
     target: "place",
     city: "Lisbon",
+  },
+  {
+    id: "johannesburg",
+    label: "Johannesburg night",
+    blurb: "Radiohead, Amélie, and ramen, as places.",
+    favorites: ["Radiohead", "Amélie", "ramen"],
+    target: "place",
+    city: "Johannesburg",
   },
   {
     id: "movies",

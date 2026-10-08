@@ -14,16 +14,16 @@ const LANES = [
 
 const PATHS = [
   {
-    id: "johannesburg",
-    title: "Johannesburg night out",
-    copy: "A night built from Radiohead, Amélie, and ramen.",
-    cityQuery: "Johannesburg",
-  },
-  {
     id: "lisbon",
     title: "Lisbon afternoon",
     copy: "The same favorites, walked through Lisbon.",
     scene: "Lisbon tiled street cafe",
+  },
+  {
+    id: "johannesburg",
+    title: "Johannesburg night out",
+    copy: "A night built from Radiohead, Amélie, and ramen.",
+    cityQuery: "Johannesburg",
   },
   {
     id: "movies",
@@ -241,7 +241,7 @@ export function HomeDesk({
               <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" />
               <circle cx="12" cy="10" r="2.2" />
             </svg>
-            <input aria-label="City" value={city} onChange={(event) => setCity(event.target.value)} placeholder="Johannesburg, South Africa" />
+            <input aria-label="City" value={city} onChange={(event) => setCity(event.target.value)} placeholder="Lisbon, Portugal" />
           </label>
           <div className="hub-line">
             <span>Frequent hubs:</span>

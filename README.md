@@ -4,9 +4,9 @@ Live demo: [https://qloo-taste-desk.onrender.com](https://qloo-taste-desk.onrend
 
 ![The interview, ready to plan](docs/screenshots/form.png)
 
-![A Qloo plan with the agent trace](docs/screenshots/trace.png)
+![Lisbon taste map, the São José overlap, and taste tags](docs/screenshots/compare.png)
 
-![The same favorites, side by side](docs/screenshots/compare.png)
+![The Lisbon plan and how the agent decided](docs/screenshots/trace.png)
 
 A small hackathon app that turns a few favorites into a Qloo-backed plan. The browser never sees the Qloo or Gemini credentials. An Express server reads them from its environment, runs `qloo exec`, and asks a Gemini Flash model only to explain items Qloo returned. Workflow calls follow the non-interactive contract in `@qloo/qloo-harness` 0.1.26.
 
@@ -36,7 +36,7 @@ npm run dev
 
 The API listens on `http://127.0.0.1:8787` when you open it from this machine. The page is at `http://localhost:5173` and proxies `/api` to that server. The status pill says Connected when the Qloo key is set.
 
-`POST /api/plan` accepts 3 to 5 favorites, a target (`place`, `movie`, `brand`, `artist`, or `book`), and an optional city. It resolves each favorite with `describe`, calls `recommend`, then asks Gemini for a JSON itinerary. Any item the model names that Qloo did not return is dropped. Place results that look like organizations are dropped when enough visitable venues remain. `/api/exec` and `/api/plan` share a limit of 20 requests per minute per IP. Identical successful Qloo calls stay cached for one hour.
+`POST /api/plan` accepts 3 to 5 favorites, a target (`place`, `movie`, `brand`, `artist`, or `book`), and an optional city. It resolves each favorite with `describe`, uses `find_tags` when a favorite is a taste rather than an entity, calls `recommend`, then asks Gemini for a JSON itinerary. Place plans also call `where_popular` for a city heatmap and `entity_tags` for a short taste label on each resolved favorite. Any item the model names that Qloo did not return is dropped. Place results that look like organizations are dropped when enough visitable venues remain. `/api/exec` and `/api/plan` share a limit of 20 requests per minute per IP. Identical successful Qloo calls stay cached for one hour.
 
 `mode` may be `qloo` (default) or `plain`. Plain asks Gemini with no Qloo catalog, so the page can show both answers for the same favorites. Three saved demos are listed by `GET /api/presets`. When a matching snapshot exists in `server/presets/`, that plan returns immediately and does not spend quota.
 
@@ -70,7 +70,7 @@ Regenerates `server/presets/*.json` from a live plan. The script refuses to writ
 
 ## What is Qloo-powered
 
-Resolution, recommendations, affinity, and popularity come from Qloo. The model may only explain items in that result set, and the server drops anything else. Each successful plan includes an agent trace: which entity or tag was chosen, that recommend ran, and any non-venues or invented names that were removed. The plain-LLM column is the control: same favorites, no catalog, no guarantee the places exist.
+Resolution (`describe`, `find_tags`), recommendations, affinity, city heatmaps (`where_popular`), and taste tags (`entity_tags`) come from Qloo. The model may only explain items in that result set, and the server drops anything else. Each successful plan includes an agent trace: which entity or tag was chosen, that recommend ran, and any non-venues or invented names that were removed. The plain-LLM column is the control: same favorites, no catalog, no guarantee the places exist.
 
 ## Limits
 
@@ -82,7 +82,7 @@ The browser talks only to this API. Express spawns `qloo exec` with `shell: fals
 
 ## Project description
 
-A plain model, given the same favorites, names venues Qloo never returned. Taste Desk turns three to five favorites into a plan in another domain, and it would not work the same without Qloo. Qloo resolves the favorites, recommends real entities, and returns affinity. The page shows that path as an agent trace. A server-side model writes the reason for each pick and must cite the favorites that connected to it. Names the model invents are removed. A side-by-side control shows the unchecked plain answer. Credentials never reach the browser.
+The Lisbon afternoon is the lead demo. Radiohead and Amélie both have heatmaps there, the map says their fans overlap at São José, and the taste tags sit beside the plan: Alternative Rock and indie rock for Radiohead, Whimsical and Magic Realism for Amélie. A plain model, given the same favorites, names venues Qloo never returned. Taste Desk turns three to five favorites into a plan in another domain, and it would not work the same without Qloo. Qloo resolves the favorites with `describe` and `find_tags`, recommends real entities, draws `where_popular` heatmaps, and reads `entity_tags`. The page shows that path as an agent trace. A server-side model writes the reason for each pick and must cite the favorites that connected to it. Names the model invents are removed. A side-by-side control shows the unchecked plain answer. Credentials never reach the browser.
 
 ## License
 

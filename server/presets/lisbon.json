@@ -198,12 +198,16 @@
             "type": "urn:tag:style:qloo"
           },
           {
-            "name": "Environmental Issues",
-            "type": "urn:tag:theme:qloo"
+            "name": "Alternative Rock",
+            "type": "urn:tag:genre:music"
           },
           {
-            "name": "satire",
-            "type": "urn:tag:keyword:media"
+            "name": "indie rock",
+            "type": "urn:tag:genre:music"
+          },
+          {
+            "name": "Environmental Issues",
+            "type": "urn:tag:theme:qloo"
           }
         ]
       },

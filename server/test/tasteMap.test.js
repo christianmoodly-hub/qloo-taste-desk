@@ -86,17 +86,35 @@ test("overlaps stay labeled per favorite instead of blending scores", () => {
 });
 
 test("taste tags keep qloo and media keyword types and drop a short list", () => {
-  const amelie = selectTasteTags(fixture("entity_tags-amelie-movie.json").result.results);
-  const radiohead = selectTasteTags(fixture("entity_tags-radiohead-artist.json").result.results);
-  assert.equal(amelie.length, 6);
-  assert.ok(amelie.every((tag) => tag.type.endsWith(":qloo")));
-  assert.deepEqual(radiohead, []);
+  const amelie = selectTasteTags(fixture("entity_tags-amelie-l20.json").result.results);
+  const radiohead = selectTasteTags(fixture("entity_tags-radiohead-l20.json").result.results);
+  const shortRadiohead = selectTasteTags(fixture("entity_tags-radiohead-artist.json").result.results);
+  assert.deepEqual(amelie.map((tag) => tag.name), [
+    "Feminism", "Magic Realism", "Whimsical", "Optimistic", "Whimsy", "Visually Lush",
+  ]);
+  assert.deepEqual(radiohead.map((tag) => tag.name), [
+    "surrealism", "Cultivated", "Cerebral", "Alternative Rock", "indie rock", "Environmental Issues",
+  ]);
+  assert.ok(radiohead.some((tag) => tag.type === "urn:tag:genre:music"));
+  assert.equal(radiohead.some((tag) => tag.name === "indie" || tag.name.startsWith(" ")), false);
+  assert.deepEqual(shortRadiohead, []);
   assert.deepEqual(selectTasteTags([
     { name: "surrealism", type: "urn:tag:keyword:media" },
     { name: "Bar", type: "urn:tag:genre:place" },
     { name: "Experimental", type: "urn:tag:genre:qloo" },
     { name: "Melancholy", type: "urn:tag:keyword:qloo" },
   ]).map((tag) => tag.name), ["surrealism", "Experimental", "Melancholy"]);
+  assert.deepEqual(selectTasteTags([
+    { name: " Musician ", type: "urn:tag:genre:music" },
+    { name: "Entertainment", type: "urn:tag:genre:media" },
+    { name: " rock", type: "urn:tag:genre:music" },
+    { name: " indie", type: "urn:tag:genre:music" },
+    { name: "Alternative Rock", type: "urn:tag:genre:music" },
+    { name: " indie rock", type: "urn:tag:genre:music" },
+    { name: "Classics", type: "urn:tag:genre:media" },
+    { name: "Whimsical", type: "urn:tag:subgenre:qloo" },
+    { name: "Whimsy", type: "urn:tag:keyword:qloo" },
+  ]).map((tag) => tag.name), ["Alternative Rock", "indie rock", "Classics", "Whimsical", "Whimsy"]);
 });
 
 test("a plan uses the city name and the sample response shape", async () => {
@@ -117,7 +135,7 @@ test("a plan uses the city name and the sample response shape", async () => {
         return { status: 200, body: fixture("where_popular-amelie-lisbon.json") };
       }
       if (operation === "entity_tags" && input.entities?.[0] === "artist-1") {
-        return { status: 200, body: fixture("entity_tags-radiohead-artist.json") };
+        return { status: 200, body: fixture("entity_tags-radiohead-l20.json") };
       }
       if (operation === "entity_tags" && input.entities?.[0] === "movie-1") {
         return { status: 200, body: fixture("entity_tags-amelie-movie.json") };
@@ -150,16 +168,17 @@ test("a plan uses the city name and the sample response shape", async () => {
   assert.deepEqual(tags.map((call) => call.input.limit), [20, 20]);
   assert.deepEqual(response.body.taste_map.favorites.map((favorite) => favorite.name), ["Radiohead", "Amélie"]);
   assert.equal(response.body.taste_map.favorites[0].clusters.length <= 2, true);
-  assert.equal(response.body.taste_tags.favorites.length, 1);
-  assert.equal(response.body.taste_tags.favorites[0].name, "Amélie");
+  assert.deepEqual(response.body.taste_tags.favorites.map((favorite) => favorite.name), ["Radiohead", "Amélie"]);
   assert.equal(response.body.taste_tags.favorites[0].tags.length, 6);
+  assert.ok(response.body.taste_tags.favorites[0].tags.some((tag) => tag.name === "Alternative Rock"));
+  assert.equal(response.body.taste_tags.favorites[1].tags.length, 6);
   assert.match(response.body.taste_map.summary, /fans/);
   assert.equal(/\d+\.\d+°/.test(response.body.taste_map.summary), false);
   assert.ok(response.body.trace.includes("Called where_popular for Radiohead within Lisbon"));
   assert.ok(response.body.trace.includes("Called where_popular for Amélie within Lisbon"));
   assert.ok(response.body.trace.includes("Skipped ramen for the taste map"));
+  assert.ok(response.body.trace.includes("Kept taste tags for Radiohead"));
   assert.ok(response.body.trace.includes("Kept taste tags for Amélie"));
-  assert.ok(response.body.trace.includes("Skipped Radiohead taste tags"));
 });
 
 test("a saved preset returns its city map and tags without calling Qloo", async () => {
