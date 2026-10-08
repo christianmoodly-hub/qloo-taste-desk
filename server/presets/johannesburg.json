@@ -104,5 +104,55 @@
     }
   ],
   "qloo_count": 5,
-  "explained": false
+  "explained": false,
+  "taste_map": {
+    "country": "South Africa",
+    "summary": "The strongest aggregate pattern in South Africa sits around Somerset West, then 33.6°S, 22.6°E.",
+    "clusters": [
+      {
+        "latitude": -34.04582,
+        "longitude": 18.87314,
+        "weight": 4.9381,
+        "count": 5,
+        "sources": [
+          "Radiohead",
+          "Amélie"
+        ],
+        "label": "Somerset West"
+      },
+      {
+        "latitude": -33.60646,
+        "longitude": 22.56255,
+        "weight": 2.9381,
+        "count": 3,
+        "sources": [
+          "Radiohead",
+          "Amélie"
+        ]
+      },
+      {
+        "latitude": -25.04883,
+        "longitude": 31.46484,
+        "weight": 0.9933,
+        "count": 1,
+        "sources": [
+          "Radiohead"
+        ]
+      },
+      {
+        "latitude": -32.25586,
+        "longitude": 24.43359,
+        "weight": 0.9355,
+        "count": 1,
+        "sources": [
+          "Amélie"
+        ]
+      }
+    ],
+    "trace": [
+      "Called where_popular for Radiohead within South Africa",
+      "Called where_popular for Amélie within South Africa",
+      "Skipped ramen for the taste map"
+    ]
+  }
 }

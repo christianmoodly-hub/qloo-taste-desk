@@ -1,0 +1,177 @@
+{
+  "ok": true,
+  "operation": "where_popular",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "where_popular",
+    "status": "ok",
+    "interpretation": {
+      "entity": {
+        "input": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+        "entityId": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+        "name": "Amélie",
+        "type": "urn:entity:movie",
+        "match": "identifier"
+      },
+      "within": "Porto"
+    },
+    "resolution": {
+      "contract_version": "1.0-preview.1",
+      "provider": {
+        "contract_version": "1.0-preview.1",
+        "provider_id": "qloo_api",
+        "name": "Qloo native resolution",
+        "entity_strategy": "exact_name_context_or_choice",
+        "tag_strategy": "target_scoped_semantic_search_exact_name_or_choice",
+        "remote": true,
+        "uses_model": false,
+        "fallback": "none"
+      },
+      "outcomes": [
+        {
+          "input": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+            "name": "Amélie",
+            "type": "urn:entity:movie",
+            "popularity": 0.9990496555001188,
+            "description": "Amélie (Le Fabuleux Destin d'Amélie Poulain) is a 2001 romantic comedy directed by Jean-Pierre Jeunet, with a US release on 2002-02-08. Starring Audrey Tautou, Mathieu Kassovitz, and Rufus, the film follows a shy, imaginative Parisian waitress who secretly engineers small acts of kindness that ripple through her neighborhood. Stylistically distinctive and narratively character-driven, it blends whimsical visual flourishes with themes of loneliness, connection, and the search for love, producing ",
+            "release_year": 2001
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [
+      {
+        "location": {
+          "latitude": 41.19049,
+          "longitude": -8.706665,
+          "geohash": "ez3f3f"
+        },
+        "query": {
+          "affinity": 1,
+          "affinity_rank": 0.9846461949265688,
+          "popularity": 0.4594594594594595,
+          "entity_movie_affinity_rank": 0.9846461949265688,
+          "entity_movie_affinity": 1
+        }
+      },
+      {
+        "location": {
+          "latitude": 41.234436,
+          "longitude": -8.673706,
+          "geohash": "ez3fdd"
+        },
+        "query": {
+          "affinity": 0.972972972972973,
+          "affinity_rank": 0.9731604342581424,
+          "popularity": 0.7567567567567568,
+          "entity_movie_affinity_rank": 0.9731604342581424,
+          "entity_movie_affinity": 0.972972972972973
+        }
+      },
+      {
+        "location": {
+          "latitude": 41.15204,
+          "longitude": -8.640747,
+          "geohash": "ez3f57"
+        },
+        "query": {
+          "affinity": 0.9459459459459459,
+          "affinity_rank": 0.9729197439684885,
+          "popularity": 0.6216216216216216,
+          "entity_movie_affinity_rank": 0.9729197439684885,
+          "entity_movie_affinity": 0.9459459459459459
+        }
+      },
+      {
+        "location": {
+          "latitude": 41.15204,
+          "longitude": -8.673706,
+          "geohash": "ez3f4e"
+        },
+        "query": {
+          "affinity": 0.918918918918919,
+          "affinity_rank": 0.967121090617482,
+          "popularity": 0.6756756756756757,
+          "entity_movie_affinity_rank": 0.967121090617482,
+          "entity_movie_affinity": 0.918918918918919
+        }
+      },
+      {
+        "location": {
+          "latitude": 41.146545,
+          "longitude": -8.640747,
+          "geohash": "ez3f56"
+        },
+        "query": {
+          "affinity": 0.8918918918918919,
+          "affinity_rank": 0.9654614139233675,
+          "popularity": 0.21621621621621623,
+          "entity_movie_affinity_rank": 0.9654614139233675,
+          "entity_movie_affinity": 0.8918918918918919
+        }
+      }
+    ],
+    "result_count": 5,
+    "provenance": {
+      "source": "Qloo API",
+      "endpoint": "/v2/insights",
+      "documentation": "https://docs.qloo.com/reference/heatmaps-use-case",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/v2/insights",
+          "query": {
+            "filter.type": "urn:heatmap",
+            "signal.interests.entities": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+            "filter.location.query": "Porto",
+            "take": 5
+          }
+        }
+      ],
+      "transport": "direct"
+    },
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "where_popular",
+      "job": "where_popular",
+      "signals": {},
+      "filters": {
+        "location": "Porto"
+      },
+      "operators": {},
+      "output": {
+        "limit": 5
+      },
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "movie",
+        "entities": [
+          "B7A0731F-EC92-496A-9C40-47D9770489B6"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-2073ddea-1b05-4cf3-847f-7a11b53db372",
+      "duration_ms": 1937
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

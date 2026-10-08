@@ -1,6 +1,8 @@
 import { draftUngrounded, explainWithGemini } from "./gemini.js";
+import { reverseLocality } from "./geocode.js";
 import { TARGETS, candidatesFrom, chooseCandidate, droppedNonVenueCount, entityFromDescribe, fallbackItinerary, filterItinerary, selectRecommendations } from "./itinerary.js";
 import { savedPreset } from "./presets.js";
+import { buildTasteMap } from "./tasteMap.js";
 
 function cleanList(values) {
   if (!Array.isArray(values)) return [];
@@ -89,13 +91,14 @@ function recommendLine(target, city) {
   return `Called recommend for ${domain}${where}`;
 }
 
-export function planTrace({ resolved, target, city, droppedVenues = 0, droppedNames = 0 }) {
+export function planTrace({ resolved, target, city, droppedVenues = 0, droppedNames = 0, tasteMap = null }) {
   const lines = (resolved || []).filter(Boolean).map(resolvedLine);
   lines.push(recommendLine(target, city));
   if (droppedVenues === 1) lines.push("Filtered 1 non-venue");
   else if (droppedVenues > 1) lines.push(`Filtered ${droppedVenues} non-venues`);
   if (droppedNames === 1) lines.push("Dropped 1 name Qloo did not return");
   else if (droppedNames > 1) lines.push(`Dropped ${droppedNames} names Qloo did not return`);
+  if (Array.isArray(tasteMap?.trace)) lines.push(...tasteMap.trace.filter((line) => typeof line === "string" && line));
   return lines;
 }
 
@@ -130,6 +133,7 @@ export async function planTaste({
   explain = explainWithGemini,
   explainPlain = draftUngrounded,
   loadSaved = savedPreset,
+  labelPlace = reverseLocality,
 }) {
   if (mode === "plain") {
     try {
@@ -172,6 +176,7 @@ export async function planTaste({
             resolved: saved.resolved,
             target: saved.target || target,
             city: saved.city || city,
+            tasteMap: saved.taste_map,
           }),
         },
       };
@@ -273,6 +278,18 @@ export async function planTaste({
     explained = false;
   }
 
+  let tasteMap = null;
+  try {
+    tasteMap = await buildTasteMap({
+      resolved,
+      city,
+      execute,
+      labelPlace,
+    });
+  } catch {
+    console.error("taste map unavailable");
+  }
+
   return {
     status: 200,
     body: {
@@ -284,7 +301,8 @@ export async function planTaste({
       city: city || null,
       resolved,
       unresolved,
-      trace: planTrace({ resolved, target, city, droppedVenues, droppedNames }),
+      trace: planTrace({ resolved, target, city, droppedVenues, droppedNames, tasteMap }),
+      taste_map: tasteMap?.country ? tasteMap : undefined,
       items,
       qloo_count: results.length,
       explained,

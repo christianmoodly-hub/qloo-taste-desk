@@ -119,5 +119,57 @@
     }
   ],
   "qloo_count": 6,
-  "explained": false
+  "explained": false,
+  "taste_map": {
+    "country": "Portugal",
+    "summary": "The strongest aggregate pattern in Portugal sits around Santo António da Charneca, then Porto.",
+    "clusters": [
+      {
+        "latitude": 38.62037,
+        "longitude": -9.02332,
+        "weight": 5.9747,
+        "count": 6,
+        "sources": [
+          "Amélie",
+          "Radiohead"
+        ],
+        "label": "Santo António da Charneca"
+      },
+      {
+        "latitude": 41.15478,
+        "longitude": -8.61332,
+        "weight": 1.9969,
+        "count": 2,
+        "sources": [
+          "Radiohead"
+        ],
+        "label": "Porto"
+      },
+      {
+        "latitude": 37.41943,
+        "longitude": -8.81103,
+        "weight": 0.9959,
+        "count": 1,
+        "sources": [
+          "Amélie"
+        ],
+        "label": "Aljezur"
+      },
+      {
+        "latitude": 37.85889,
+        "longitude": -25.81787,
+        "weight": 0.9835,
+        "count": 1,
+        "sources": [
+          "Amélie"
+        ],
+        "label": "Ponta Delgada"
+      }
+    ],
+    "trace": [
+      "Called where_popular for Radiohead within Portugal",
+      "Called where_popular for Amélie within Portugal",
+      "Skipped ramen for the taste map"
+    ]
+  }
 }

@@ -1,0 +1,176 @@
+{
+  "ok": true,
+  "operation": "where_popular",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "where_popular",
+    "status": "ok",
+    "interpretation": {
+      "entity": {
+        "input": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+        "entityId": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+        "name": "Radiohead",
+        "type": "urn:entity:artist",
+        "match": "identifier"
+      },
+      "within": "Lisbon"
+    },
+    "resolution": {
+      "contract_version": "1.0-preview.1",
+      "provider": {
+        "contract_version": "1.0-preview.1",
+        "provider_id": "qloo_api",
+        "name": "Qloo native resolution",
+        "entity_strategy": "exact_name_context_or_choice",
+        "tag_strategy": "target_scoped_semantic_search_exact_name_or_choice",
+        "remote": true,
+        "uses_model": false,
+        "fallback": "none"
+      },
+      "outcomes": [
+        {
+          "input": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+            "name": "Radiohead",
+            "type": "urn:entity:artist",
+            "popularity": 0.9999966263060412,
+            "description": "Radiohead is an English rock band known for their innovative and experimental approach to music."
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [
+      {
+        "location": {
+          "latitude": 38.713074,
+          "longitude": -9.1241455,
+          "geohash": "eycs0r"
+        },
+        "query": {
+          "affinity": 1,
+          "affinity_rank": 0.994724,
+          "popularity": 0.9888641425389755,
+          "entity_artist_affinity_rank": 0.994724,
+          "entity_artist_affinity": 1
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.72406,
+          "longitude": -9.135132,
+          "geohash": "eycs21"
+        },
+        "query": {
+          "affinity": 0.9977728285077951,
+          "affinity_rank": 0.994287,
+          "popularity": 1,
+          "entity_artist_affinity_rank": 0.994287,
+          "entity_artist_affinity": 0.9977728285077951
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.713074,
+          "longitude": -9.146118,
+          "geohash": "eyckpz"
+        },
+        "query": {
+          "affinity": 0.9955456570155902,
+          "affinity_rank": 0.993685,
+          "popularity": 0.9933184855233853,
+          "entity_artist_affinity_rank": 0.993685,
+          "entity_artist_affinity": 0.9955456570155902
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.713074,
+          "longitude": -9.135132,
+          "geohash": "eycs0p"
+        },
+        "query": {
+          "affinity": 0.9933184855233853,
+          "affinity_rank": 0.993361,
+          "popularity": 0.9955456570155902,
+          "entity_artist_affinity_rank": 0.993361,
+          "entity_artist_affinity": 0.9933184855233853
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.70758,
+          "longitude": -9.146118,
+          "geohash": "eyckpy"
+        },
+        "query": {
+          "affinity": 0.9910913140311804,
+          "affinity_rank": 0.992912,
+          "popularity": 0.9910913140311804,
+          "entity_artist_affinity_rank": 0.992912,
+          "entity_artist_affinity": 0.9910913140311804
+        }
+      }
+    ],
+    "result_count": 5,
+    "provenance": {
+      "source": "Qloo API",
+      "endpoint": "/v2/insights",
+      "documentation": "https://docs.qloo.com/reference/heatmaps-use-case",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/v2/insights",
+          "query": {
+            "filter.type": "urn:heatmap",
+            "signal.interests.entities": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+            "filter.location.query": "Lisbon",
+            "take": 5
+          }
+        }
+      ],
+      "transport": "direct"
+    },
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "where_popular",
+      "job": "where_popular",
+      "signals": {},
+      "filters": {
+        "location": "Lisbon"
+      },
+      "operators": {},
+      "output": {
+        "limit": 5
+      },
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "artist",
+        "entities": [
+          "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-38e3ae7a-8255-49dd-97a3-2c536e249a98",
+      "duration_ms": 2884
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

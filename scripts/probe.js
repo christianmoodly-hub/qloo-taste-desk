@@ -37,6 +37,12 @@ const calls = [
   ["entity_tags", { entities: [AMELIE], entity_type: "movie", limit: 8 }, "entity_tags-amelie-movie.json"],
   ["entity_tags", { entities: [RADIOHEAD], entity_type: "artist", limit: 8 }, "entity_tags-radiohead-artist.json"],
   ["where_popular", { entity: AMELIE, entity_type: "movie", within: "Portugal", limit: 5 }, "where_popular-amelie-portugal.json"],
+  ["where_popular", { entity: RADIOHEAD, entity_type: "artist", within: "Lisbon", limit: 5 }, "where_popular-radiohead-lisbon.json"],
+  ["where_popular", { entity: AMELIE, entity_type: "movie", within: "Lisbon", limit: 5 }, "where_popular-amelie-lisbon.json"],
+  ["where_popular", { entity: RADIOHEAD, entity_type: "artist", within: "Johannesburg", limit: 5 }, "where_popular-radiohead-johannesburg.json"],
+  ["where_popular", { entity: AMELIE, entity_type: "movie", within: "Johannesburg", limit: 5 }, "where_popular-amelie-johannesburg.json"],
+  ["where_popular", { entity: RADIOHEAD, entity_type: "artist", within: "Porto", limit: 5 }, "where_popular-radiohead-porto.json"],
+  ["where_popular", { entity: AMELIE, entity_type: "movie", within: "Porto", limit: 5 }, "where_popular-amelie-porto.json"],
 ];
 
 const restaurants = [
@@ -100,11 +106,6 @@ function resolvedPlace(body) {
     entityId,
     name: entity?.name ?? result.results?.[0]?.name ?? entityId,
   };
-}
-
-function tagLines(body) {
-  const results = Array.isArray(body?.result?.results) ? body.result.results : [];
-  return results.map((tag) => `${tag.name} (${tag.type}, affinity ${tag.affinity})`);
 }
 
 loadEnv();
@@ -201,15 +202,57 @@ if (pending.length === 0 && describePending.length === 0 && !rankPending && !ran
   }
 }
 
-const amelieTags = path.join(samplesDir, "entity_tags-amelie-movie.json");
-const radioheadTags = path.join(samplesDir, "entity_tags-radiohead-artist.json");
-if (existsSync(amelieTags)) {
-  const body = JSON.parse(await readFile(amelieTags, "utf8"));
-  const tags = tagLines(body);
-  console.log(`Amélie movie tags (${body.result?.status ?? "-"}): ${tags.length > 0 ? tags.join("; ") : "(none)"}`);
+function distanceKm(from, to) {
+  const toRad = (degrees) => (degrees * Math.PI) / 180;
+  const lat = toRad(to.lat - from.lat);
+  const lng = toRad(to.lng - from.lng);
+  const a = Math.sin(lat / 2) ** 2
+    + Math.cos(toRad(from.lat)) * Math.cos(toRad(to.lat)) * Math.sin(lng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
-if (existsSync(radioheadTags)) {
-  const body = JSON.parse(await readFile(radioheadTags, "utf8"));
-  const tags = tagLines(body);
-  console.log(`Radiohead artist tags (${body.result?.status ?? "-"}): ${tags.length > 0 ? tags.join("; ") : "(none)"}`);
+
+function farthestKm(points) {
+  let farthest = 0;
+  for (let left = 0; left < points.length; left += 1) {
+    for (let right = left + 1; right < points.length; right += 1) {
+      farthest = Math.max(farthest, distanceKm(points[left], points[right]));
+    }
+  }
+  return farthest;
+}
+
+const citySamples = [
+  "where_popular-radiohead-lisbon.json",
+  "where_popular-amelie-lisbon.json",
+  "where_popular-radiohead-johannesburg.json",
+  "where_popular-amelie-johannesburg.json",
+  "where_popular-radiohead-porto.json",
+  "where_popular-amelie-porto.json",
+];
+
+for (const fileName of citySamples) {
+  const file = path.join(samplesDir, fileName);
+  if (!existsSync(file)) continue;
+  const body = JSON.parse(await readFile(file, "utf8"));
+  const rows = Array.isArray(body.result?.results) ? body.result.results : [];
+  const points = rows
+    .map((row) => ({ lat: Number(row?.location?.latitude), lng: Number(row?.location?.longitude) }))
+    .filter((point) => Number.isFinite(point.lat) && Number.isFinite(point.lng));
+  const spread = points.length > 1 ? farthestKm(points) : 0;
+  const scale = points.length < 2
+    ? "not enough points"
+    : spread <= 8
+      ? "neighborhood-level"
+      : spread <= 40
+        ? "city-level, wider than one neighborhood"
+        : "wider than a city";
+  console.log(`${fileName}: points=${points.length} status=${body.result?.status ?? "-"} spread=${spread.toFixed(1)} km ${scale}`);
+}
+
+for (const fileName of ["entity_tags-amelie-movie.json", "entity_tags-radiohead-artist.json"]) {
+  const file = path.join(samplesDir, fileName);
+  if (!existsSync(file)) continue;
+  const body = JSON.parse(await readFile(file, "utf8"));
+  const types = [...new Set((body.result?.results || []).map((tag) => tag.type).filter(Boolean))];
+  console.log(`${fileName} tag types: ${types.join(", ") || "(none)"}`);
 }

@@ -367,6 +367,39 @@ button.nav-next,
   object-fit: cover;
 }
 
+.taste-map-panel {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 28px;
+}
+
+.taste-map-copy h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.taste-summary {
+  margin: 6px 0 0;
+  font-family: Newsreader, Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.taste-caption {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.taste-map {
+  width: 100%;
+  height: 340px;
+  border: 0;
+  border-radius: 16px;
+  background: #efe6da;
+  z-index: 0;
+}
+
 .plan-map {
   width: 100%;
   height: 230px;
