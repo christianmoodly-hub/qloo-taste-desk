@@ -1,0 +1,99 @@
+{
+  "ok": true,
+  "operation": "describe",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "describe",
+    "status": "needs_input",
+    "summary": "Choose the intended Qloo entity.",
+    "resolution": {
+      "issues": [
+        {
+          "input": "DW Eleven - 13 Johannesburg",
+          "kind": "ambiguous",
+          "input_kind": "entity",
+          "field": "entity",
+          "scope": "urn:entity:place",
+          "candidates": [
+            {
+              "id": "C022CCD1-FD76-4DA1-AD20-8D0FE83BD3FE",
+              "name": "DW Eleven - 13",
+              "type": "urn:entity:place",
+              "popularity": 0.9061857263156174,
+              "description": "Intimate fine-dining restaurant offering creative, globally inspired tasting menus paired with curated wines in an elegant setting.",
+              "address": "Dunkeld West Shopping Centre Jan Smuts Ave Dunkeld West, Randburg 2193, South Africa"
+            },
+            {
+              "id": "8A3B7C60-6781-4D9F-ACA4-3F1927C027E3",
+              "name": "Sean's Bar",
+              "type": "urn:entity:place",
+              "popularity": 0.9919637116140888,
+              "description": "Low-ceilinged, 1,000-year-old riverside pub featuring live music and historic artifacts.",
+              "address": "13 Main St Athlone And Bigmeadow Athlone Co. Westmeath, N37 DW76, Ireland"
+            },
+            {
+              "id": "724F81AA-B31D-4611-AB3E-12500C2131E2",
+              "name": "Longdendale Trail",
+              "type": "urn:entity:place",
+              "popularity": 0.9411981571270914,
+              "description": "Scenic former railway trail along upland reservoirs, offering walking, cycling and views across the Pennine valley.",
+              "address": "4 Platt St Padfield Glossop SK13 1DW United Kingdom"
+            },
+            {
+              "id": "BC52F843-CE22-4D55-A523-496AE63F5504",
+              "name": "The Malvern Hills Hotel & Restaurants",
+              "type": "urn:entity:place",
+              "popularity": 0.9230160755484286,
+              "description": "Upscale country hotel at the foot of British Camp hill fort with scenic views, locally sourced cuisine and a dog-friendly 18th-century oak lounge bar.",
+              "address": "Jubilee Dr Upper Colwall Malvern WR13 6DW United Kingdom"
+            },
+            {
+              "id": "37A64C13-A56F-4401-9532-77AA461111A5",
+              "name": "All Bar One Brindleyplace",
+              "type": "urn:entity:place",
+              "popularity": 0.9210090928980748,
+              "description": "Modern riverside chain bar offering cocktails, wine, beer and sharing plates in a stylish after-work setting.",
+              "address": "Units 12G, Eleven Brindley Place 13G Waters Edge Birmingham B1 2HL United Kingdom"
+            }
+          ],
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/search",
+            "strategy": "exact_name_context_or_choice",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [],
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "describe",
+      "job": "describe",
+      "signals": {},
+      "filters": {},
+      "operators": {},
+      "output": {},
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "place",
+        "entities": [
+          "DW Eleven - 13 Johannesburg"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-eb45cae7-51db-4693-be63-c2718b012947",
+      "duration_ms": 1813
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

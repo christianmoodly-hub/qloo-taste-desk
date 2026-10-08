@@ -3,8 +3,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { AccountPanel, accountInitials } from "./AccountPanel.jsx";
 import { auth, loadCloudDesk, saveCloudDesk } from "./firebase.js";
 import { CityMood } from "./CityMood.jsx";
+import { HomeDesk } from "./HomeDesk.jsx";
 import { JourneyMap } from "./JourneyMap.jsx";
-import { TasteInterview } from "./TasteInterview.jsx";
 
 const FALLBACK_OPERATIONS = [
   {
@@ -20,12 +20,6 @@ const TARGETS = [
   { id: "brand", label: "Brands" },
   { id: "artist", label: "Artists" },
   { id: "book", label: "Books" },
-];
-
-const MODES = [
-  { id: "qloo", label: "Qloo-grounded" },
-  { id: "plain", label: "Plain LLM" },
-  { id: "both", label: "Side by side" },
 ];
 
 const DESK_DEFAULTS = {
@@ -431,33 +425,39 @@ export function App() {
   const showQloo = mode !== "plain";
   const showPlain = mode !== "qloo";
   const storyPlan = qlooPlan || plainPlan;
+  const showHome = !storyPlan || composerOpen;
   const nightLabel = target === "place" ? "night" : target;
   const radar = radarValues(favorites, qlooPlan?.items || []);
   const trace = Array.isArray(qlooPlan?.trace) ? qlooPlan.trace : [];
 
+  function showHomeScreen() {
+    setComposerOpen(true);
+    document.getElementById("plan")?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function showExamples(event) {
+    event.preventDefault();
+    setComposerOpen(true);
+    window.setTimeout(() => {
+      document.getElementById("examples")?.scrollIntoView({ behavior: "smooth" });
+    }, 40);
+  }
+
   return (
     <div className="desk">
       <header className="topbar">
-        <a className="brand" href="#plan">
+        <a className="brand" href="#plan" onClick={showHomeScreen}>
           <span className="mark">T</span>
-          Taste Desk
+          <span className="brand-name">Taste Desk</span>
         </a>
+        <span className="brand-rule" aria-hidden="true" />
+        <p className="brand-tag">Your taste, translated for a new city</p>
+        <span className={health?.credentialConfigured ? "live-pill on" : "live-pill"}>{credentialLabel}</span>
         <nav>
-          <a href="#plan">Your plan</a>
-          <a href="#method">Methodology</a>
-          <button
-            type="button"
-            className="text-link"
-            onClick={() => {
-              if (!user) {
-                setAccountOpen(true);
-                return;
-              }
-              setComposerOpen(true);
-            }}
-          >
-            A new city
-          </button>
+          <button type="button" className={showHome ? "nav-link current" : "nav-link"} onClick={showHomeScreen}>Home</button>
+          <button type="button" className="nav-link" onClick={showExamples}>Examples</button>
+          <a className="nav-link" href="#about">About</a>
+          <a className="nav-link" href="https://github.com/christianmoodly-hub/qloo-taste-desk" target="_blank" rel="noreferrer">GitHub</a>
         </nav>
         <div className="account-slot">
           <button
@@ -478,6 +478,21 @@ export function App() {
       </header>
 
       <main id="plan">
+        {syncNote ? <p className="form-error">{syncNote}</p> : null}
+        {showHome ? (
+          <HomeDesk
+            favorites={favorites}
+            setFavorites={setFavorites}
+            target={target}
+            city={city}
+            setCity={setCity}
+            presets={presets}
+            pending={pending}
+            error={error}
+            onPlan={onPlan}
+          />
+        ) : (
+          <>
         <p className="eyebrow">Results based on Taste Desk · Your taste, translated into a new city</p>
         <h1>
           Your {city.trim() || "next"} {nightLabel}, based on <em>{favoritePhrase(favorites)}</em>.
@@ -493,40 +508,16 @@ export function App() {
             <span className="tag">{TARGETS.find((item) => item.id === target)?.label}</span>
           </div>
           {user ? (
-            <button type="button" className="edit-tastes" onClick={() => setComposerOpen((open) => !open)}>
+            <button type="button" className="edit-tastes" onClick={() => setComposerOpen(true)}>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M4 16.5V20h3.5L18.8 8.7l-3.5-3.5L4 16.5z" />
                 <path d="M14.2 6.3l3.5 3.5" />
               </svg>
-              {composerOpen ? "Hide the interview" : "Edit tastes"}
+              Edit tastes
             </button>
           ) : null}
         </div>
         <CityMood city={city} />
-
-        {syncNote ? <p className="form-error">{syncNote}</p> : null}
-        {!authReady ? <p className="loading">Checking your account.</p> : null}
-        {authReady && !user ? <AccountPanel user={null} onSession={() => setUser(auth.currentUser)} /> : null}
-        {user && (composerOpen || (!qlooPlan && !plainPlan)) ? (
-          <TasteInterview
-            favorites={favorites}
-            setFavorites={setFavorites}
-            target={target}
-            setTarget={setTarget}
-            city={city}
-            setCity={setCity}
-            mode={mode}
-            setMode={setMode}
-            targets={TARGETS}
-            modes={MODES}
-            presets={presets}
-            pending={pending}
-            error={error}
-            health={health}
-            credentialLabel={credentialLabel}
-            onPlan={onPlan}
-          />
-        ) : null}
 
         <div className={qlooPlan ? "results" : "results single"}>
           <section className="venues" aria-live="polite">
@@ -597,13 +588,20 @@ export function App() {
             </ul>
           </section>
         ) : null}
+          </>
+        )}
       </main>
 
-      <footer>
-        <strong>Taste Desk</strong>
-        <p>Aggregate taste affinities, not claims about any individual. The plain-model column stays unchecked on purpose.</p>
-        <a href="#plan">Plan</a>
-        <a href="#method">Method</a>
+      <footer className="site-footer" id="about">
+        <div>
+          <strong>Taste Desk</strong>
+          <p>Powered by Qloo’s taste graph. Results reflect aggregate taste patterns, not claims about any individual.</p>
+        </div>
+        <nav>
+          <a href="#about">About</a>
+          <a href="https://github.com/christianmoodly-hub/qloo-taste-desk" target="_blank" rel="noreferrer">GitHub</a>
+          <span>© 2026 Taste Desk</span>
+        </nav>
       </footer>
 
       <details className="console">

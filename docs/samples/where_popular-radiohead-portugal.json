@@ -1,0 +1,206 @@
+{
+  "ok": true,
+  "operation": "where_popular",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "where_popular",
+    "status": "ok",
+    "interpretation": {
+      "entity": {
+        "input": "Radiohead",
+        "entityId": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+        "name": "Radiohead",
+        "type": "urn:entity:artist",
+        "match": "exact"
+      },
+      "within": "Portugal"
+    },
+    "resolution": {
+      "contract_version": "1.0-preview.1",
+      "provider": {
+        "contract_version": "1.0-preview.1",
+        "provider_id": "qloo_api",
+        "name": "Qloo native resolution",
+        "entity_strategy": "exact_name_context_or_choice",
+        "tag_strategy": "target_scoped_semantic_search_exact_name_or_choice",
+        "remote": true,
+        "uses_model": false,
+        "fallback": "none"
+      },
+      "outcomes": [
+        {
+          "input": "Radiohead",
+          "status": "resolved",
+          "match": "exact",
+          "selected": {
+            "id": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+            "name": "Radiohead",
+            "type": "urn:entity:artist",
+            "popularity": 0.9999966263060412,
+            "description": "Radiohead is an English rock band known for their innovative and experimental approach to music."
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/search",
+            "strategy": "exact_name_context_or_choice",
+            "remote": true,
+            "uses_model": false
+          },
+          "alternatives": [
+            {
+              "id": "99ECEFED-B982-40C2-A2ED-EB042E9545FA",
+              "name": "Radiohead Tribute",
+              "type": "urn:entity:artist",
+              "popularity": 0.46901430783607895,
+              "description": "A tribute band dedicated to performing the music of Radiohead."
+            },
+            {
+              "id": "BF711411-5659-4CEF-BC46-ADEAACEB52EA",
+              "name": "Dub Tribute To Radiohead",
+              "type": "urn:entity:artist",
+              "popularity": 0.7304081157581871,
+              "description": "A group performing dub reggae covers of Radiohead songs."
+            },
+            {
+              "id": "A754373E-0D89-4FD7-85B4-6F22F413D1D1",
+              "name": "The Bluegrass Tribute to Radiohead",
+              "type": "urn:entity:artist",
+              "popularity": 0.6333435668716748,
+              "description": "A bluegrass tribute band performing covers of Radiohead songs."
+            },
+            {
+              "id": "93D30F68-DA61-4CB3-A672-1C7983C79086",
+              "name": "Thom Yorke and Johnny Greenwood (Radiohead)",
+              "type": "urn:entity:artist",
+              "popularity": 0.5109257078853349,
+              "description": "Thom Yorke and Johnny Greenwood are key members of Radiohead, known for innovative alternative and experimental rock music."
+            }
+          ]
+        }
+      ]
+    },
+    "results": [
+      {
+        "location": {
+          "latitude": 41.154785,
+          "longitude": -8.635254,
+          "geohash": "ez3f5"
+        },
+        "query": {
+          "affinity": 1,
+          "affinity_rank": 0.995213,
+          "popularity": 0.9984423676012462,
+          "entity_artist_affinity_rank": 0.995213,
+          "entity_artist_affinity": 1
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.693848,
+          "longitude": -9.118652,
+          "geohash": "eycs0"
+        },
+        "query": {
+          "affinity": 0.9992211838006231,
+          "affinity_rank": 0.994939,
+          "popularity": 0.9976635514018691,
+          "entity_artist_affinity_rank": 0.994939,
+          "entity_artist_affinity": 0.9992211838006231
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.737793,
+          "longitude": -9.118652,
+          "geohash": "eycs2"
+        },
+        "query": {
+          "affinity": 0.9984423676012462,
+          "affinity_rank": 0.994736,
+          "popularity": 1,
+          "entity_artist_affinity_rank": 0.994736,
+          "entity_artist_affinity": 0.9984423676012462
+        }
+      },
+      {
+        "location": {
+          "latitude": 38.693848,
+          "longitude": -9.162598,
+          "geohash": "eyckp"
+        },
+        "query": {
+          "affinity": 0.9976635514018691,
+          "affinity_rank": 0.994181,
+          "popularity": 0.9992211838006231,
+          "entity_artist_affinity_rank": 0.994181,
+          "entity_artist_affinity": 0.9976635514018691
+        }
+      },
+      {
+        "location": {
+          "latitude": 41.154785,
+          "longitude": -8.591309,
+          "geohash": "ez3fh"
+        },
+        "query": {
+          "affinity": 0.9968847352024922,
+          "affinity_rank": 0.99387,
+          "popularity": 0.9961059190031153,
+          "entity_artist_affinity_rank": 0.99387,
+          "entity_artist_affinity": 0.9968847352024922
+        }
+      }
+    ],
+    "result_count": 5,
+    "provenance": {
+      "source": "Qloo API",
+      "endpoint": "/v2/insights",
+      "documentation": "https://docs.qloo.com/reference/heatmaps-use-case",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/v2/insights",
+          "query": {
+            "filter.type": "urn:heatmap",
+            "signal.interests.entities": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+            "filter.location.query": "Portugal",
+            "take": 5
+          }
+        }
+      ],
+      "transport": "direct"
+    },
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "where_popular",
+      "job": "where_popular",
+      "signals": {},
+      "filters": {
+        "location": "Portugal"
+      },
+      "operators": {},
+      "output": {
+        "limit": 5
+      },
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "artist",
+        "entities": [
+          "Radiohead"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-e7c38648-3882-4fe8-9f02-e6caa04e5497",
+      "duration_ms": 2810
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

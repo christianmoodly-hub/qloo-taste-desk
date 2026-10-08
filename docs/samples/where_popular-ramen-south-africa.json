@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "operation": "where_popular",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "where_popular",
+    "status": "needs_input",
+    "summary": "Choose the intended Qloo entity.",
+    "resolution": {
+      "issues": [
+        {
+          "input": "ramen",
+          "kind": "ambiguous",
+          "input_kind": "entity",
+          "field": "entity",
+          "candidates": [
+            {
+              "id": "0E650077-B891-45DA-9C8B-9B006CBB7BA1",
+              "name": "Ramen",
+              "type": "urn:entity:place",
+              "popularity": 0.7633703193156571,
+              "description": "Casual Asian street-food restaurant serving fresh, healthy wok-cooked dishes, Southeast Asian curries, and customizable vegan options for takeout and dine-in.",
+              "address": "13 Carey's Ln Centre Cork T12 RD00, Ireland"
+            },
+            {
+              "id": "78E3BFD8-2657-4DEB-9AB7-67E4A0EC12BA",
+              "name": "Ramen",
+              "type": "urn:entity:place",
+              "popularity": 0.7619052925577458,
+              "description": "Fresh Asian street-food specializing in wok-cooked ramen, curries and healthy vegan options with dine-in, delivery and outdoor seating.",
+              "address": "Cork Rd Priorsknock Waterford Ireland"
+            },
+            {
+              "id": "8E3DD055-11A3-46C2-96D4-28E0401CC415",
+              "name": "Ramen",
+              "type": "urn:entity:place",
+              "popularity": 0.7611759365640443,
+              "description": "Casual Asian street-food restaurant in Douglas serving fresh, healthy ramen, curries and small plates with halal, vegan and vegetarian options, plus beer and wine.",
+              "address": "Barryscourt House East Village Douglas Cork, T12 KC7K, Ireland"
+            }
+          ],
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/search",
+            "strategy": "exact_name_context_or_choice",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [],
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "where_popular",
+      "job": "where_popular",
+      "signals": {},
+      "filters": {
+        "location": "South Africa"
+      },
+      "operators": {},
+      "output": {
+        "limit": 5
+      },
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "entities": [
+          "ramen"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-ab39bd7e-5103-4da0-baea-53df622f21fe",
+      "duration_ms": 1851
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

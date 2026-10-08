@@ -67,8 +67,11 @@ export function createApp({ execute, plan, rateLimit } = {}) {
 
   app.get("/api/mood", async (req, res, next) => {
     try {
+      const scene = typeof req.query.scene === "string" ? req.query.scene : "";
       const city = typeof req.query.city === "string" ? req.query.city : "";
-      const photo = await cityPhoto(city);
+      const photo = scene
+        ? await cityPhoto(scene, process.env, fetch, { query: scene })
+        : await cityPhoto(city);
       res.json({ ok: true, photo });
     } catch (error) {
       next(error);

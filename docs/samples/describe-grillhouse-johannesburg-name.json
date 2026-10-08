@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "operation": "describe",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "describe",
+    "status": "needs_input",
+    "summary": "Choose the intended Qloo entity.",
+    "resolution": {
+      "issues": [
+        {
+          "input": "The Grillhouse Johannesburg",
+          "kind": "ambiguous",
+          "input_kind": "entity",
+          "field": "entity",
+          "scope": "urn:entity:place",
+          "candidates": [
+            {
+              "id": "D4CC364F-4B07-4FD3-B700-5E4374095EC0",
+              "name": "The Grillhouse Melrose Arch",
+              "type": "urn:entity:place",
+              "popularity": 0.9642192102005088,
+              "description": "Upscale white-tablecloth steakhouse in Melrose Arch serving steaks, ribs, seafood platters, fine wines and cocktails.",
+              "address": "Melrose Arch H20 & H21 38 Whiteley Rd Melrose North, Johannesburg, 2076, South Africa"
+            },
+            {
+              "id": "167982AE-006A-4348-8A70-E82FF16E1E5A",
+              "name": "Bennigan's Grillhouse & Bar Bedfordview",
+              "type": "urn:entity:place",
+              "popularity": 0.8467217611820657,
+              "description": "Casual American-style grill and bar serving steaks, burgers, ribs and cocktails in a family-friendly pub atmosphere.",
+              "address": "Cnr Skeen Boulevard & Hawley Rd Bedfordview, Johannesburg 2007, South Africa"
+            },
+            {
+              "id": "6DDCAB6C-D1B7-44AD-8818-3F3277143592",
+              "name": "Bar & Grillhouse @ Studio 334",
+              "type": "urn:entity:place",
+              "popularity": 0.3605960549028435,
+              "description": "Lively bar and grill in Discovery, Johannesburg offering live music, happy-hour drinks, pizzas, and late-night dining with outdoor seating.",
+              "address": "334 Ontdekkers Rd Discovery, Johannesburg 1709 South Africa"
+            }
+          ],
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/search",
+            "strategy": "exact_name_context_or_choice",
+            "remote": true,
+            "uses_model": false
+          },
+          "warnings": [
+            "Qloo candidate choices were narrowed using the supplied name and location terms."
+          ]
+        }
+      ]
+    },
+    "results": [],
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "describe",
+      "job": "describe",
+      "signals": {},
+      "filters": {},
+      "operators": {},
+      "output": {},
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "place",
+        "entities": [
+          "The Grillhouse Johannesburg"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-95ad2d5a-540a-4599-b814-c84b1123c639",
+      "duration_ms": 1792
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

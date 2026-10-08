@@ -1,0 +1,353 @@
+{
+  "ok": true,
+  "operation": "rank",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "rank",
+    "status": "ok",
+    "interpretation": {
+      "option_type": "urn:entity:place",
+      "options": [
+        {
+          "input": "DF7E30FA-16E4-455D-895F-F6BD1D02CEC0",
+          "entityId": "DF7E30FA-16E4-455D-895F-F6BD1D02CEC0",
+          "name": "86 Public Fourways",
+          "type": "urn:entity:place",
+          "match": "identifier"
+        },
+        {
+          "input": "D4D21AFF-1788-4ED0-A922-6E949A802329",
+          "entityId": "D4D21AFF-1788-4ED0-A922-6E949A802329",
+          "name": "Marble Restaurant",
+          "type": "urn:entity:place",
+          "match": "identifier"
+        },
+        {
+          "input": "CF4552AD-5EDC-45B1-AE51-9C994632F2BC",
+          "entityId": "CF4552AD-5EDC-45B1-AE51-9C994632F2BC",
+          "name": "Les Créatifs Restaurant",
+          "type": "urn:entity:place",
+          "match": "identifier"
+        },
+        {
+          "input": "3B8215EB-43AF-4050-9C78-67B783C7EC8E",
+          "entityId": "3B8215EB-43AF-4050-9C78-67B783C7EC8E",
+          "name": "Cube Tasting Kitchen",
+          "type": "urn:entity:place",
+          "match": "identifier"
+        }
+      ],
+      "signals": [
+        {
+          "input": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+          "entityId": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+          "name": "Amélie",
+          "type": "urn:entity:movie",
+          "match": "identifier"
+        },
+        {
+          "input": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+          "entityId": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+          "name": "Radiohead",
+          "type": "urn:entity:artist",
+          "match": "identifier"
+        }
+      ],
+      "include_tags": [],
+      "exclude_tags": []
+    },
+    "resolution": {
+      "contract_version": "1.0-preview.1",
+      "provider": {
+        "contract_version": "1.0-preview.1",
+        "provider_id": "qloo_api",
+        "name": "Qloo native resolution",
+        "entity_strategy": "exact_name_context_or_choice",
+        "tag_strategy": "target_scoped_semantic_search_exact_name_or_choice",
+        "remote": true,
+        "uses_model": false,
+        "fallback": "none"
+      },
+      "outcomes": [
+        {
+          "input": "DF7E30FA-16E4-455D-895F-F6BD1D02CEC0",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "DF7E30FA-16E4-455D-895F-F6BD1D02CEC0",
+            "name": "86 Public Fourways",
+            "type": "urn:entity:place",
+            "popularity": 0.26003352028768606,
+            "description": "Intimate, vibey pizzeria in Pineslopes Shopping Centre serving pizzas, cocktails, small plates and late-night drinks with dine-in and outdoor seating.",
+            "address": "Shop GF 33a, Pineslopes Boulevard, Corner Witkoppen Rd and The Straight Ave Fourways, Johannesburg 2194, South Africa"
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        },
+        {
+          "input": "D4D21AFF-1788-4ED0-A922-6E949A802329",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "D4D21AFF-1788-4ED0-A922-6E949A802329",
+            "name": "Marble Restaurant",
+            "type": "urn:entity:place",
+            "popularity": 0.9748991586868397,
+            "description": "Sleek rooftop steakhouse showcasing South African fire-cooked cuisine, panoramic city views, craft cocktails, and a premium local wine list.",
+            "address": "Trumpet on Keyes Corner 19 Keyes and Jellicoe Ave Rosebank, Johannesburg 2196, South Africa"
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        },
+        {
+          "input": "CF4552AD-5EDC-45B1-AE51-9C994632F2BC",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "CF4552AD-5EDC-45B1-AE51-9C994632F2BC",
+            "name": "Les Créatifs Restaurant",
+            "type": "urn:entity:place",
+            "popularity": 0.4847706308195718,
+            "description": "Experiential contemporary French fine-dining with artistic interiors, bespoke crockery, and a world-class wine list in an exclusive Bryanston setting.",
+            "address": "Shop 12H, Hobart Grove Centre 52 Hobart Rd Bryanston, Sandton 2191, South Africa"
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        },
+        {
+          "input": "3B8215EB-43AF-4050-9C78-67B783C7EC8E",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "3B8215EB-43AF-4050-9C78-67B783C7EC8E",
+            "name": "Cube Tasting Kitchen",
+            "type": "urn:entity:place",
+            "popularity": 0.7905650642379316,
+            "description": "Hip, relaxed BYOB restaurant in two dining rooms offering a creative 10-course tasting menu.",
+            "address": "5, Parknorth Heights 17 4th Ave Parktown North, Randburg 2193, South Africa"
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        },
+        {
+          "input": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+            "name": "Amélie",
+            "type": "urn:entity:movie",
+            "popularity": 0.9990496555001188,
+            "description": "Amélie (Le Fabuleux Destin d'Amélie Poulain) is a 2001 romantic comedy directed by Jean-Pierre Jeunet, with a US release on 2002-02-08. Starring Audrey Tautou, Mathieu Kassovitz, and Rufus, the film follows a shy, imaginative Parisian waitress who secretly engineers small acts of kindness that ripple through her neighborhood. Stylistically distinctive and narratively character-driven, it blends whimsical visual flourishes with themes of loneliness, connection, and the search for love, producing ",
+            "release_year": 2001
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        },
+        {
+          "input": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C",
+            "name": "Radiohead",
+            "type": "urn:entity:artist",
+            "popularity": 0.9999966263060412,
+            "description": "Radiohead is an English rock band known for their innovative and experimental approach to music."
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [
+      {
+        "entity_id": "CF4552AD-5EDC-45B1-AE51-9C994632F2BC",
+        "name": "Les Créatifs Restaurant",
+        "type": "urn:entity",
+        "subtype": "urn:entity:place",
+        "popularity": 0.4847706308195718,
+        "affinity": 0.7137796841577081,
+        "properties": {
+          "description": "Experiential contemporary French fine-dining with artistic interiors, bespoke crockery, and a world-class wine list in an exclusive Bryanston setting.",
+          "short_description": "Experiential contemporary French fine-dining with artistic interiors, bespoke crockery, and a world-class wine list in an exclusive Bryanston setting.",
+          "image": {
+            "url": "https://images.qloo.com/i/CF4552AD-5EDC-45B1-AE51-9C994632F2BC-420x-auto.jpg"
+          },
+          "geocode": {
+            "city": "Midrand",
+            "name": "Johannesburg Ward 106",
+            "metro": null,
+            "country": "South Africa",
+            "country_code": "ZA",
+            "admin1_region": "Gauteng",
+            "admin2_region": "City of Johannesburg Metropolitan Municipality"
+          },
+          "address": "Shop 12H, Hobart Grove Centre 52 Hobart Rd Bryanston, Sandton 2191, South Africa",
+          "price_level": null,
+          "business_rating": 4.699999809265137
+        }
+      },
+      {
+        "entity_id": "DF7E30FA-16E4-455D-895F-F6BD1D02CEC0",
+        "name": "86 Public Fourways",
+        "type": "urn:entity",
+        "subtype": "urn:entity:place",
+        "popularity": 0.26003352028768606,
+        "affinity": 0.6988097558709725,
+        "properties": {
+          "description": "Intimate, vibey pizzeria in Pineslopes Shopping Centre serving pizzas, cocktails, small plates and late-night drinks with dine-in and outdoor seating.",
+          "short_description": "Intimate, vibey pizzeria in Pineslopes Shopping Centre serving pizzas, cocktails, small plates and late-night drinks with dine-in and outdoor seating.",
+          "image": {
+            "url": "https://images.qloo.com/i/DF7E30FA-16E4-455D-895F-F6BD1D02CEC0-420x-auto.jpg"
+          },
+          "geocode": {
+            "city": "Diepsloot",
+            "name": "Johannesburg Ward 106",
+            "metro": null,
+            "country": "South Africa",
+            "country_code": "ZA",
+            "admin1_region": "Gauteng",
+            "admin2_region": "City of Johannesburg Metropolitan Municipality"
+          },
+          "address": "Shop GF 33a, Pineslopes Boulevard, Corner Witkoppen Rd and The Straight Ave Fourways, Johannesburg 2194, South Africa",
+          "price_level": null,
+          "business_rating": 4
+        }
+      },
+      {
+        "entity_id": "D4D21AFF-1788-4ED0-A922-6E949A802329",
+        "name": "Marble Restaurant",
+        "type": "urn:entity",
+        "subtype": "urn:entity:place",
+        "popularity": 0.9748991586868397,
+        "affinity": 0.6378632003038295,
+        "properties": {
+          "description": "Sleek rooftop steakhouse showcasing South African fire-cooked cuisine, panoramic city views, craft cocktails, and a premium local wine list.",
+          "short_description": "Sleek rooftop steakhouse showcasing South African fire-cooked cuisine, panoramic city views, craft cocktails, and a premium local wine list.",
+          "image": {
+            "url": "https://images.qloo.com/i/D4D21AFF-1788-4ED0-A922-6E949A802329-420x-auto.jpg"
+          },
+          "geocode": {
+            "city": "Johannesburg",
+            "name": "Johannesburg Ward 117",
+            "metro": null,
+            "country": "South Africa",
+            "country_code": "ZA",
+            "admin1_region": "Gauteng",
+            "admin2_region": "City of Johannesburg Metropolitan Municipality"
+          },
+          "address": "Trumpet on Keyes Corner 19 Keyes and Jellicoe Ave Rosebank, Johannesburg 2196, South Africa",
+          "price_level": 4,
+          "business_rating": 4.5
+        }
+      }
+    ],
+    "result_count": 3,
+    "provenance": {
+      "source": "Qloo API",
+      "endpoint": "/v2/insights",
+      "documentation": "https://docs.qloo.com/reference/insights-api-deep-dive",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/v2/insights",
+          "query": {
+            "filter.type": "urn:entity:place",
+            "filter.results.entities": [
+              "DF7E30FA-16E4-455D-895F-F6BD1D02CEC0",
+              "D4D21AFF-1788-4ED0-A922-6E949A802329",
+              "CF4552AD-5EDC-45B1-AE51-9C994632F2BC",
+              "3B8215EB-43AF-4050-9C78-67B783C7EC8E"
+            ],
+            "take": 4,
+            "signal.interests.entities": [
+              "B7A0731F-EC92-496A-9C40-47D9770489B6",
+              "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C"
+            ]
+          }
+        }
+      ],
+      "transport": "direct"
+    },
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "rank",
+      "job": "rank",
+      "signals": {
+        "entities": [
+          "B7A0731F-EC92-496A-9C40-47D9770489B6",
+          "70CAE5BF-2F4C-445C-A3E5-4EDACFC3591C"
+        ]
+      },
+      "filters": {
+        "candidateEntities": [
+          "DF7E30FA-16E4-455D-895F-F6BD1D02CEC0",
+          "D4D21AFF-1788-4ED0-A922-6E949A802329",
+          "CF4552AD-5EDC-45B1-AE51-9C994632F2BC",
+          "3B8215EB-43AF-4050-9C78-67B783C7EC8E"
+        ]
+      },
+      "operators": {},
+      "output": {
+        "limit": 4
+      },
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "place"
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-d79a25b5-84a0-4e60-9f56-02cdd3cc5e8f",
+      "duration_ms": 6102
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

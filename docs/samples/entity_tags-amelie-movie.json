@@ -1,0 +1,164 @@
+{
+  "ok": true,
+  "operation": "entity_tags",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "entity_tags",
+    "status": "ok",
+    "interpretation": {
+      "entities": [
+        {
+          "input": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+          "entityId": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+          "name": "Amélie",
+          "type": "urn:entity:movie",
+          "match": "identifier"
+        }
+      ]
+    },
+    "resolution": {
+      "contract_version": "1.0-preview.1",
+      "provider": {
+        "contract_version": "1.0-preview.1",
+        "provider_id": "qloo_api",
+        "name": "Qloo native resolution",
+        "entity_strategy": "exact_name_context_or_choice",
+        "tag_strategy": "target_scoped_semantic_search_exact_name_or_choice",
+        "remote": true,
+        "uses_model": false,
+        "fallback": "none"
+      },
+      "outcomes": [
+        {
+          "input": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+          "status": "resolved",
+          "match": "identifier",
+          "selected": {
+            "id": "B7A0731F-EC92-496A-9C40-47D9770489B6",
+            "name": "Amélie",
+            "type": "urn:entity:movie",
+            "popularity": 0.9990496555001188,
+            "description": "Amélie (Le Fabuleux Destin d'Amélie Poulain) is a 2001 romantic comedy directed by Jean-Pierre Jeunet, with a US release on 2002-02-08. Starring Audrey Tautou, Mathieu Kassovitz, and Rufus, the film follows a shy, imaginative Parisian waitress who secretly engineers small acts of kindness that ripple through her neighborhood. Stylistically distinctive and narratively character-driven, it blends whimsical visual flourishes with themes of loneliness, connection, and the search for love, producing ",
+            "release_year": 2001
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/entities",
+            "strategy": "identifier_lookup",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [
+      {
+        "id": "urn:tag:genre:qloo:feminism",
+        "name": "Feminism",
+        "type": "urn:tag:genre:qloo",
+        "popularity": 0.9689749217832401,
+        "affinity": 1
+      },
+      {
+        "id": "urn:tag:archetype:qloo:magic_realism",
+        "name": "Magic Realism",
+        "type": "urn:tag:archetype:qloo",
+        "popularity": 0.9057868385348768,
+        "affinity": 0.9998259052924791
+      },
+      {
+        "id": "urn:tag:subgenre:qloo:whimsical",
+        "name": "Whimsical",
+        "type": "urn:tag:subgenre:qloo",
+        "popularity": 0.9447272156624221,
+        "affinity": 0.9996530428145167
+      },
+      {
+        "id": "urn:tag:audience:qloo:optimistic",
+        "name": "Optimistic",
+        "type": "urn:tag:audience:qloo",
+        "popularity": 0.9965006865418476,
+        "affinity": 0.9994741844803527
+      },
+      {
+        "id": "urn:tag:keyword:qloo:whimsy",
+        "name": "Whimsy",
+        "type": "urn:tag:keyword:qloo",
+        "popularity": 0.9949829214375424,
+        "affinity": 0.999321644750574
+      },
+      {
+        "id": "urn:tag:style:qloo:visually_lush",
+        "name": "Visually Lush",
+        "type": "urn:tag:style:qloo",
+        "popularity": 0.9212145907854005,
+        "affinity": 0.998869184376795
+      },
+      {
+        "id": "urn:tag:keyword:qloo:quirky",
+        "name": "Quirky",
+        "type": "urn:tag:keyword:qloo",
+        "popularity": 0.9933743311587576,
+        "affinity": 0.9987290155166022
+      },
+      {
+        "id": "urn:tag:character:qloo:unique",
+        "name": "Unique",
+        "type": "urn:tag:character:qloo",
+        "popularity": 0.979108659601069,
+        "affinity": 0.998628416883995
+      }
+    ],
+    "result_count": 8,
+    "provenance": {
+      "source": "Qloo API",
+      "endpoint": "/v2/insights",
+      "documentation": "https://docs.qloo.com/reference/taste-analysis",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/v2/insights",
+          "query": {
+            "filter.type": "urn:tag",
+            "signal.interests.entities": [
+              "B7A0731F-EC92-496A-9C40-47D9770489B6"
+            ],
+            "take": 8
+          }
+        }
+      ],
+      "transport": "direct"
+    },
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "entity_tags",
+      "job": "entity_tags",
+      "signals": {
+        "entities": [
+          "B7A0731F-EC92-496A-9C40-47D9770489B6"
+        ]
+      },
+      "filters": {},
+      "operators": {},
+      "output": {
+        "limit": 8
+      },
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "movie"
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-edeae924-1206-464a-89d5-ae860e90eb8f",
+      "duration_ms": 4042
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

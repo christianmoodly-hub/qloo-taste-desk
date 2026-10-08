@@ -24,15 +24,16 @@ export function publicPhoto(photo, city) {
   };
 }
 
-export async function cityPhoto(city, env = process.env, fetchImpl = fetch) {
-  const query = String(city || "").trim().replace(/\s+/g, " ");
+export async function cityPhoto(city, env = process.env, fetchImpl = fetch, options = {}) {
+  const query = String(options.query || city || "").trim().replace(/\s+/g, " ");
   if (query.length < 2 || query.length > 80) return null;
-  const key = query.toLowerCase();
+  const search = options.query ? query : `${query} city`;
+  const key = search.toLowerCase();
   if (cache.has(key)) return cache.get(key);
   const accessKey = typeof env.UNSPLASH_ACCESS_KEY === "string" ? env.UNSPLASH_ACCESS_KEY.trim() : "";
   if (!accessKey) return null;
   const url = new URL("https://api.unsplash.com/search/photos");
-  url.searchParams.set("query", `${query} city`);
+  url.searchParams.set("query", search);
   url.searchParams.set("per_page", "1");
   url.searchParams.set("orientation", "landscape");
   url.searchParams.set("content_filter", "high");

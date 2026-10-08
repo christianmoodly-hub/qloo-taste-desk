@@ -1,0 +1,165 @@
+{
+  "ok": true,
+  "operation": "describe",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "describe",
+    "status": "ok",
+    "interpretation": {
+      "entity": {
+        "input": "Cube Tasting Kitchen Parktown North",
+        "entityId": "3B8215EB-43AF-4050-9C78-67B783C7EC8E",
+        "name": "Cube Tasting Kitchen",
+        "type": "urn:entity:place",
+        "match": "semantic"
+      }
+    },
+    "resolution": {
+      "contract_version": "1.0-preview.1",
+      "provider": {
+        "contract_version": "1.0-preview.1",
+        "provider_id": "qloo_api",
+        "name": "Qloo native resolution",
+        "entity_strategy": "exact_name_context_or_choice",
+        "tag_strategy": "target_scoped_semantic_search_exact_name_or_choice",
+        "remote": true,
+        "uses_model": false,
+        "fallback": "none"
+      },
+      "outcomes": [
+        {
+          "input": "Cube Tasting Kitchen Parktown North",
+          "status": "resolved",
+          "match": "semantic",
+          "selected": {
+            "id": "3B8215EB-43AF-4050-9C78-67B783C7EC8E",
+            "name": "Cube Tasting Kitchen",
+            "type": "urn:entity:place",
+            "popularity": 0.7905650642379316,
+            "description": "Hip, relaxed BYOB restaurant in two dining rooms offering a creative 10-course tasting menu.",
+            "address": "5, Parknorth Heights 17 4th Ave Parktown North, Randburg 2193, South Africa"
+          },
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/search",
+            "strategy": "exact_name_context_or_choice",
+            "remote": true,
+            "uses_model": false
+          },
+          "alternatives": [
+            {
+              "id": "077ADF29-077B-40AB-963F-33F9EA70EBC1",
+              "name": "The Tasting Kitchen",
+              "type": "urn:entity:place",
+              "popularity": 0.9880413104857507,
+              "description": "Hip, inventive Mediterranean restaurant on Abbot Kinney known for creative plates, handcrafted pastas, cocktails, bustling brunch, and tasting menus.",
+              "address": "1633 Abbot Kinney Blvd Venice, CA 90291"
+            },
+            {
+              "id": "709CB3D5-6486-43FB-95AE-5EE9475EB089",
+              "name": "La Boqueria Parktown North",
+              "type": "urn:entity:place",
+              "popularity": 0.9869822863258102,
+              "description": "Hispanic-style restaurant serving market-style sharing plates, smoky hearth paellas and Latin-inspired tapas in a Barcelona-inspired, plant-filled dining room.",
+              "address": "17 3rd Ave Parktown North, Randburg 2193 South Africa"
+            },
+            {
+              "id": "780D08C8-E710-4F1B-9390-EE7054796F70",
+              "name": "Prime: An American Kitchen & Bar",
+              "type": "urn:entity:place",
+              "popularity": 0.9928007901635191,
+              "description": "Polished waterfront steakhouse serving steaks, seafood, sushi, cocktails, and live-music brunch with scenic sunset harbor views.",
+              "address": "117 North New York Ave Huntington, NY 11743"
+            },
+            {
+              "id": "93D9FA8B-BA8B-4AEC-80FD-0EC1DAB27222",
+              "name": "Taco Mundo Kitchen y Cantina",
+              "type": "urn:entity:place",
+              "popularity": 0.9850698395045356,
+              "description": "Lively Mexican eatery with waterfront views, vibrant decor, and a festive atmosphere offering tacos, fajitas, rice bowls, and creative cocktails.",
+              "address": "4732 Hwy 17 S North Myrtle Beach, SC 29582"
+            }
+          ],
+          "warnings": [
+            "Qloo selected the only candidate matching every supplied name and location term; reuse its Qloo ID to override future name resolution."
+          ]
+        }
+      ],
+      "warnings": [
+        "Qloo selected the only candidate matching every supplied name and location term; reuse its Qloo ID to override future name resolution."
+      ]
+    },
+    "warnings": [
+      "Qloo selected the only candidate matching every supplied name and location term; reuse its Qloo ID to override future name resolution."
+    ],
+    "results": [
+      {
+        "entity_id": "3B8215EB-43AF-4050-9C78-67B783C7EC8E",
+        "name": "Cube Tasting Kitchen",
+        "popularity": 0.7905650642379316,
+        "properties": {
+          "description": "Hip, relaxed BYOB restaurant in two dining rooms offering a creative 10-course tasting menu.",
+          "image": {
+            "url": "https://images.qloo.com/i/3B8215EB-43AF-4050-9C78-67B783C7EC8E-420x-auto.jpg"
+          },
+          "geocode": {
+            "name": "Johannesburg Ward 117",
+            "city": "Johannesburg",
+            "admin1_region": "Gauteng",
+            "admin2_region": "City of Johannesburg Metropolitan Municipality",
+            "country_code": "ZA",
+            "country": "South Africa"
+          },
+          "address": "5, Parknorth Heights 17 4th Ave Parktown North, Randburg 2193, South Africa",
+          "business_rating": 4.7
+        }
+      }
+    ],
+    "result_count": 1,
+    "provenance": {
+      "source": "Qloo API",
+      "endpoint": "/entities",
+      "documentation": "https://docs.qloo.com/reference/get-entities",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/entities",
+          "query": {
+            "entity_ids": [
+              "3B8215EB-43AF-4050-9C78-67B783C7EC8E"
+            ]
+          }
+        }
+      ],
+      "transport": "direct"
+    },
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "describe",
+      "job": "describe",
+      "signals": {},
+      "filters": {},
+      "operators": {},
+      "output": {},
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "place",
+        "entities": [
+          "Cube Tasting Kitchen Parktown North"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-3fbbd60d-65b2-4faa-b1d5-4a0bfca0522d",
+      "duration_ms": 2134
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}

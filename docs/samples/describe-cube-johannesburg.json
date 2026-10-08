@@ -1,0 +1,99 @@
+{
+  "ok": true,
+  "operation": "describe",
+  "result": {
+    "schema_version": "1.0-preview.1",
+    "operation": "describe",
+    "status": "needs_input",
+    "summary": "Choose the intended Qloo entity.",
+    "resolution": {
+      "issues": [
+        {
+          "input": "Cube Tasting Kitchen Johannesburg",
+          "kind": "ambiguous",
+          "input_kind": "entity",
+          "field": "entity",
+          "scope": "urn:entity:place",
+          "candidates": [
+            {
+              "id": "3B8215EB-43AF-4050-9C78-67B783C7EC8E",
+              "name": "Cube Tasting Kitchen",
+              "type": "urn:entity:place",
+              "popularity": 0.7905650642379316,
+              "description": "Hip, relaxed BYOB restaurant in two dining rooms offering a creative 10-course tasting menu.",
+              "address": "5, Parknorth Heights 17 4th Ave Parktown North, Randburg 2193, South Africa"
+            },
+            {
+              "id": "077ADF29-077B-40AB-963F-33F9EA70EBC1",
+              "name": "The Tasting Kitchen",
+              "type": "urn:entity:place",
+              "popularity": 0.9880413104857507,
+              "description": "Hip, inventive Mediterranean restaurant on Abbot Kinney known for creative plates, handcrafted pastas, cocktails, bustling brunch, and tasting menus.",
+              "address": "1633 Abbot Kinney Blvd Venice, CA 90291"
+            },
+            {
+              "id": "11DB0FD8-9E6E-4944-A60C-67B6DED56E1D",
+              "name": "Hell's Kitchen",
+              "type": "urn:entity:place",
+              "popularity": 0.989177597720145,
+              "description": "Trendy Melville restaurant-bar serving cocktails, craft beers, late-night bites, healthy and vegetarian options in a lively neighborhood atmosphere.",
+              "address": "4 7th St Melville, Johannesburg 2109 South Africa"
+            },
+            {
+              "id": "0DD7452B-3EB8-4C84-8C87-604BBDBE5131",
+              "name": "Cube Bar Kitchen",
+              "type": "urn:entity:place",
+              "popularity": 0.9546616193077452,
+              "description": "Lively LGBTQ+-friendly bistro and bar offering cocktails, craft beers, real ales, wines, dancing, and moderately priced food in Poulton-le-Fylde.",
+              "address": "2 Breck Rd Poulton-le-Fylde FY6 7AA United Kingdom"
+            },
+            {
+              "id": "175AA620-E263-454D-A4FF-C731C4767FAF",
+              "name": "Orono Brewing Company - Tasting Room & Kitchen",
+              "type": "urn:entity:place",
+              "popularity": 0.8810724411899851,
+              "description": "Brewpub taproom and kitchen offering craft beers on 24 drafts, a large beer garden, and comfort-food menu in Orono, Maine.",
+              "address": "61 Margin St Orono, ME 04473"
+            }
+          ],
+          "provenance": {
+            "contract_version": "1.0-preview.1",
+            "provider_id": "qloo_api",
+            "provider_name": "Qloo native resolution",
+            "endpoint": "/search",
+            "strategy": "exact_name_context_or_choice",
+            "remote": true,
+            "uses_model": false
+          }
+        }
+      ]
+    },
+    "results": [],
+    "query_intent": {
+      "schema_version": "1.0-preview.1",
+      "source_contract_version": "1.0.0",
+      "operation": "describe",
+      "job": "describe",
+      "signals": {},
+      "filters": {},
+      "operators": {},
+      "output": {},
+      "assumptions": [],
+      "unresolved": [],
+      "target": {
+        "type": "place",
+        "entities": [
+          "Cube Tasting Kitchen Johannesburg"
+        ]
+      }
+    },
+    "execution": {
+      "transport": "direct",
+      "transport_name": "Qloo API",
+      "correlation_id": "exec-3e725f92-f5cc-4511-8265-c3cd889b5aed",
+      "duration_ms": 1254
+    }
+  },
+  "cached": false,
+  "attempts": 1
+}
