@@ -82,55 +82,6 @@ function favoritePhrase(favorites) {
   return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
 }
 
-function radarValues(favorites, items) {
-  const labels = favorites.filter(Boolean).slice(0, 5);
-  const usable = labels.length >= 3 ? labels : ["Taste", "Place", "Mood"];
-  return usable.map((label) => {
-    const cited = (items || []).filter((item) =>
-      (item.cited_inputs || []).some((input) => input.toLowerCase() === label.toLowerCase()),
-    );
-    if (cited.length === 0) return { label, value: 0.55 };
-    const total = cited.reduce((sum, item) => sum + (typeof item.affinity === "number" ? item.affinity : 0.7), 0);
-    return { label, value: Math.min(1, Math.max(0.2, total / cited.length)) };
-  });
-}
-
-function Radar({ points }) {
-  const cx = 140;
-  const cy = 132;
-  const radius = 72;
-  const count = points.length;
-  const at = (index, scale) => {
-    const angle = -Math.PI / 2 + (index * 2 * Math.PI) / count;
-    return [cx + Math.cos(angle) * radius * scale, cy + Math.sin(angle) * radius * scale];
-  };
-  const ring = (scale) => points.map((_, index) => at(index, scale).join(",")).join(" ");
-  const shape = points.map((point, index) => at(index, point.value).join(",")).join(" ");
-  return (
-    <svg className="radar" viewBox="0 0 280 250" role="img" aria-label="Taste radar">
-      {[1, 0.66, 0.33].map((scale) => (
-        <polygon key={scale} points={ring(scale)} />
-      ))}
-      {points.map((_, index) => {
-        const [x, y] = at(index, 1);
-        return <line key={index} x1={cx} y1={cy} x2={x} y2={y} />;
-      })}
-      <polygon className="radar-shape" points={shape} />
-      {points.map((point, index) => {
-        const [x, y] = at(index, point.value);
-        const [lx, ly] = at(index, 1.38);
-        const anchor = lx < cx - 12 ? "end" : lx > cx + 12 ? "start" : "middle";
-        return (
-          <g key={point.label}>
-            <circle cx={x} cy={y} r="3.5" />
-            <text x={lx} y={ly} textAnchor={anchor} dominantBaseline="middle">{point.label}</text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
 function photoTone(name) {
   const tones = ["tone-a", "tone-b", "tone-c", "tone-d", "tone-e"];
   const index = [...name].reduce((sum, char) => sum + char.charCodeAt(0), 0);
@@ -199,6 +150,8 @@ export function App() {
   const [syncNote, setSyncNote] = useState("");
   const [accountOpen, setAccountOpen] = useState(false);
   const [qlooPending, setQlooPending] = useState(false);
+  const [slowWait, setSlowWait] = useState(false);
+  const [pendingId, setPendingId] = useState("");
   const [plainPending, setPlainPending] = useState(false);
   const [qlooPlan, setQlooPlan] = useState(null);
   const [plainPlan, setPlainPlan] = useState(null);
@@ -343,6 +296,8 @@ export function App() {
       setQlooPlan(null);
       setQlooPending(true);
     }
+    setPendingId(overrides.id || "form");
+    setSlowWait(!overrides.ready);
     if (nextMode !== "qloo") {
       setPlainPlan(null);
       setPlainPending(true);
@@ -373,6 +328,8 @@ export function App() {
     } finally {
       setQlooPending(false);
       setPlainPending(false);
+      setSlowWait(false);
+      setPendingId("");
     }
   }
 
@@ -428,7 +385,6 @@ export function App() {
   const storyPlan = qlooPlan || plainPlan;
   const showHome = !storyPlan || composerOpen;
   const nightLabel = target === "place" ? "night" : target;
-  const radar = radarValues(favorites, qlooPlan?.items || []);
   const trace = Array.isArray(qlooPlan?.trace) ? qlooPlan.trace : [];
 
   function showHomeScreen() {
@@ -489,6 +445,8 @@ export function App() {
             setCity={setCity}
             presets={presets}
             pending={pending}
+            pendingId={pendingId}
+            slowWait={slowWait}
             error={error}
             onPlan={onPlan}
           />
@@ -568,10 +526,6 @@ export function App() {
                     </li>
                   ))}
                 </ol>
-              </section>
-              <section className="side-card">
-                <h2>Journey progression</h2>
-                <Radar points={radar} />
               </section>
               <section className="side-card rationale">
                 <h2>Curator's rationale</h2>

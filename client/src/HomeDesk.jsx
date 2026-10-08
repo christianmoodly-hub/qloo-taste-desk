@@ -72,7 +72,7 @@ function ChipIcon({ kind }) {
   );
 }
 
-function PathwayCard({ path, preset, pending, onOpen }) {
+function PathwayCard({ path, preset, pending, busy, onOpen }) {
   const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
@@ -108,9 +108,9 @@ function PathwayCard({ path, preset, pending, onOpen }) {
             Photograph by <a href={photo.photographerUrl} target="_blank" rel="noreferrer">{photo.photographer}</a> on <a href={photo.unsplashUrl} target="_blank" rel="noreferrer">Unsplash</a>
           </p>
         ) : null}
-        <button type="button" onClick={() => onOpen(preset)} disabled={pending || !preset}>
-          <span>{count} favorites mapped{preset?.ready ? " · instant" : ""}</span>
-          <span aria-hidden="true">→</span>
+        <button type="button" onClick={() => onOpen(preset)} disabled={pending || !preset} aria-busy={busy}>
+          <span>{busy ? "Opening this plan" : `${count} favorites mapped${preset?.ready ? " · instant" : ""}`}</span>
+          {busy ? <span className="spinner" aria-hidden="true" /> : <span aria-hidden="true">→</span>}
         </button>
       </div>
     </article>
@@ -125,6 +125,8 @@ export function HomeDesk({
   setCity,
   presets,
   pending,
+  pendingId,
+  slowWait,
   error,
   onPlan,
 }) {
@@ -253,11 +255,15 @@ export function HomeDesk({
           </div>
         </section>
 
-        <button type="submit" className="translate" disabled={pending || clean.length < 3}>
-          {pending ? "Translating your taste" : "Translate my taste"}
-          <span aria-hidden="true">→</span>
+        <button type="submit" className="translate" disabled={pending || clean.length < 3} aria-busy={pending && pendingId === "form"}>
+          {pending && pendingId === "form" ? <span className="spinner" aria-hidden="true" /> : null}
+          {pending && pendingId === "form" ? "Translating your taste" : "Translate my taste"}
+          {pending && pendingId === "form" ? null : <span aria-hidden="true">→</span>}
         </button>
         {error ? <p className="form-error">{error}</p> : null}
+        {slowWait ? (
+          <p className="wait-toast" role="status">This can take a minute. We're mixing your tastes with this city.</p>
+        ) : null}
       </form>
 
       <section className="pathways" id="examples">
@@ -275,6 +281,7 @@ export function HomeDesk({
               path={path}
               preset={presets.find((item) => item.id === path.id)}
               pending={pending}
+              busy={pending && pendingId === path.id}
               onOpen={(preset) => onPlan(null, { ...preset, mode: "qloo" })}
             />
           ))}

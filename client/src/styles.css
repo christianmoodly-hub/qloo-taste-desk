@@ -588,34 +588,33 @@ button.nav-next,
   padding: 18px;
 }
 
-.radar {
-  display: block;
-  width: 100%;
-  max-width: 280px;
-  margin: 4px auto 0;
+.spinner {
+  width: 0.95em;
+  height: 0.95em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex: none;
 }
 
-.radar text {
-  fill: var(--muted);
-  font-size: 11px;
-  font-family: Outfit, "Segoe UI", sans-serif;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.radar polygon,
-.radar line {
-  fill: none;
-  stroke: #e4d5c6;
-  stroke-width: 1;
-}
-
-.radar-shape {
-  fill: rgba(196, 92, 38, 0.22);
-  stroke: var(--terra);
-}
-
-.radar circle {
-  fill: var(--terra);
-  stroke: none;
+.wait-toast {
+  position: fixed;
+  z-index: 30;
+  left: 50%;
+  bottom: 20px;
+  width: min(420px, calc(100% - 32px));
+  margin: 0;
+  transform: translateX(-50%);
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #2c241c;
+  color: #f7f1e8;
+  box-shadow: 0 16px 40px rgba(44, 36, 28, 0.28);
 }
 
 .stops,
@@ -1377,5 +1376,9 @@ textarea {
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
+  }
+
+  .spinner {
+    animation: none;
   }
 }
