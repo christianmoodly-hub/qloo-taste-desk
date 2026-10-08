@@ -7,6 +7,8 @@ import { OPERATION_IDS, OPERATIONS, containsSecretField } from "./operations.js"
 import { planTaste, readPlanRequest } from "./planTaste.js";
 import { listPresets } from "./presets.js";
 import { createExecutor } from "./qlooExec.js";
+import { geocodePlaces } from "./geocode.js";
+import { cityPhoto } from "./unsplash.js";
 import { createRateLimiter } from "./rateLimit.js";
 
 const LOCAL_ORIGINS = new Set([
@@ -61,6 +63,32 @@ export function createApp({ execute, plan, rateLimit } = {}) {
 
   app.get("/api/presets", (_req, res) => {
     res.json({ presets: listPresets() });
+  });
+
+  app.get("/api/mood", async (req, res, next) => {
+    try {
+      const city = typeof req.query.city === "string" ? req.query.city : "";
+      const photo = await cityPhoto(city);
+      res.json({ ok: true, photo });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post("/api/geocode", async (req, res, next) => {
+    try {
+      if (!isPlainObject(req.body) || !Array.isArray(req.body.queries)) {
+        res.status(400).json({
+          ok: false,
+          error: { code: "BAD_REQUEST", message: "Send a short list of place names." },
+        });
+        return;
+      }
+      const points = await geocodePlaces(req.body.queries);
+      res.json({ ok: true, points });
+    } catch (error) {
+      next(error);
+    }
   });
 
   app.post("/api/exec", limit, async (req, res, next) => {

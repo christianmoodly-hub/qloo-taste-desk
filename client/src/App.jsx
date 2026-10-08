@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { AccountPanel, accountInitials } from "./AccountPanel.jsx";
+import { auth, loadCloudDesk, saveCloudDesk } from "./firebase.js";
+import { CityMood } from "./CityMood.jsx";
+import { JourneyMap } from "./JourneyMap.jsx";
 import { TasteInterview } from "./TasteInterview.jsx";
 
 const FALLBACK_OPERATIONS = [
@@ -23,8 +28,24 @@ const MODES = [
   { id: "both", label: "Side by side" },
 ];
 
-function formatScore(value) {
-  return typeof value === "number" && Number.isFinite(value) ? value.toFixed(2) : null;
+const DESK_DEFAULTS = {
+  favorites: ["Radiohead", "Amélie", "ramen"],
+  target: "place",
+  city: "Lisbon",
+  mode: "qloo",
+};
+
+function deskKey(uid) {
+  return `taste-desk:${uid}`;
+}
+
+function readDesk(uid) {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(deskKey(uid)) || "null");
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
 }
 
 function errorMessage(body, status, fallback) {
@@ -51,78 +72,137 @@ async function readJson(response) {
   }
 }
 
-function PlanColumn({ title, plan, pending, empty, kind }) {
+function subtypeLabel(value) {
+  return String(value || "").replace(/^urn:entity:/, "").replaceAll("_", " ");
+}
+
+function affinityPercent(value) {
+  return typeof value === "number" && Number.isFinite(value) ? Math.round(Math.min(1, Math.max(0, value)) * 100) : null;
+}
+
+function favoritePhrase(favorites) {
+  const names = favorites.filter(Boolean);
+  if (names.length === 0) return "your favorites";
+  if (names.length === 1) return names[0];
+  return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
+}
+
+function radarValues(favorites, items) {
+  const labels = favorites.filter(Boolean).slice(0, 5);
+  const usable = labels.length >= 3 ? labels : ["Taste", "Place", "Mood"];
+  return usable.map((label) => {
+    const cited = (items || []).filter((item) =>
+      (item.cited_inputs || []).some((input) => input.toLowerCase() === label.toLowerCase()),
+    );
+    if (cited.length === 0) return { label, value: 0.55 };
+    const total = cited.reduce((sum, item) => sum + (typeof item.affinity === "number" ? item.affinity : 0.7), 0);
+    return { label, value: Math.min(1, Math.max(0.2, total / cited.length)) };
+  });
+}
+
+function Radar({ points }) {
+  const cx = 140;
+  const cy = 132;
+  const radius = 72;
+  const count = points.length;
+  const at = (index, scale) => {
+    const angle = -Math.PI / 2 + (index * 2 * Math.PI) / count;
+    return [cx + Math.cos(angle) * radius * scale, cy + Math.sin(angle) * radius * scale];
+  };
+  const ring = (scale) => points.map((_, index) => at(index, scale).join(",")).join(" ");
+  const shape = points.map((point, index) => at(index, point.value).join(",")).join(" ");
   return (
-    <section className="panel result" aria-live="polite">
-      <div className="result-head">
-        <h2>{title}</h2>
-        {plan?.preset ? <span className="pill ready">Saved preset</span> : null}
-        {plan && plan.grounded === false ? <span className="pill warn">Not checked</span> : null}
-        {plan?.grounded && plan.explained === false ? <span className="pill">Qloo ranking</span> : null}
-        {plan?.grounded && plan.explained ? <span className="pill ready">Explained</span> : null}
+    <svg className="radar" viewBox="0 0 280 250" role="img" aria-label="Taste radar">
+      {[1, 0.66, 0.33].map((scale) => (
+        <polygon key={scale} points={ring(scale)} />
+      ))}
+      {points.map((_, index) => {
+        const [x, y] = at(index, 1);
+        return <line key={index} x1={cx} y1={cy} x2={x} y2={y} />;
+      })}
+      <polygon className="radar-shape" points={shape} />
+      {points.map((point, index) => {
+        const [x, y] = at(index, point.value);
+        const [lx, ly] = at(index, 1.38);
+        const anchor = lx < cx - 12 ? "end" : lx > cx + 12 ? "start" : "middle";
+        return (
+          <g key={point.label}>
+            <circle cx={x} cy={y} r="3.5" />
+            <text x={lx} y={ly} textAnchor={anchor} dominantBaseline="middle">{point.label}</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function photoTone(name) {
+  const tones = ["tone-a", "tone-b", "tone-c", "tone-d", "tone-e"];
+  const index = [...name].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  return tones[index % tones.length];
+}
+
+function qlooImageUrl(entityId) {
+  const id = String(entityId || "");
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+  return `https://images.qloo.com/i/${id.toUpperCase()}-420x-auto.jpg`;
+}
+
+function VenueCard({ item, city }) {
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const photo = qlooImageUrl(item.entity_id);
+  const percent = affinityPercent(item.affinity);
+  const tags = [...new Set([...(item.cited_inputs || []), subtypeLabel(item.subtype), city].filter(Boolean))].slice(0, 3);
+  return (
+    <article className="venue">
+      <div className={`venue-photo ${photoTone(item.name)}`}>
+        {photo && !photoFailed ? (
+          <img
+            src={photo}
+            alt=""
+            onError={() => setPhotoFailed(true)}
+            onLoad={(event) => {
+              if (event.currentTarget.naturalWidth < 80) setPhotoFailed(true);
+            }}
+          />
+        ) : (
+          <span aria-hidden="true">{item.name.slice(0, 1)}</span>
+        )}
       </div>
-      {pending ? (
-        <div className="loading">
-          <p>{kind === "plain" ? "Writing a comparison." : "Asking Qloo for a grounded plan."}</p>
-          <p className="hint">Still working. Writing the reasons can take a little longer.</p>
+      <div className="venue-copy">
+        <h3>{item.name}</h3>
+        <p className="venue-lead">{item.address || `Connected to ${(item.cited_inputs || []).join(", ")}.`}</p>
+        <div className="tag-row">
+          {tags.map((tag) => (
+            <span key={tag} className="tag">{tag}</span>
+          ))}
         </div>
-      ) : null}
-      {!pending && plan ? (
-        <>
-          <p className="summary">{plan.summary}</p>
-          {Array.isArray(plan.trace) && plan.trace.length > 0 ? (
-            <>
-              <p className="trace-label">Agent trace</p>
-              <ol className="trace">
-                {plan.trace.map((line, index) => (
-                  <li key={`${index}-${line}`}>{line}</li>
-                ))}
-              </ol>
-            </>
-          ) : null}
-          {plan.grounded === false ? (
-            <p className="hint">These names were not checked against Qloo. Closed or invented places can appear here.</p>
-          ) : null}
-          <ol className="picks">
-            {plan.items.map((item) => {
-              const affinity = formatScore(item.affinity);
-              const popularity = formatScore(item.popularity);
-              return (
-                <li key={item.entity_id || item.name}>
-                  <div className="pick-title">
-                    <strong>{item.name}</strong>
-                    {item.subtype ? <span className="pill">{String(item.subtype).replace("urn:entity:", "")}</span> : null}
-                  </div>
-                  {affinity || popularity ? (
-                    <p className="signal">
-                      Qloo signal
-                      {affinity ? ` · affinity ${affinity}` : ""}
-                      {popularity ? ` · popularity ${popularity}` : ""}
-                    </p>
-                  ) : null}
-                  <p className="because">
-                    Connected to {item.cited_inputs.join(", ")}
-                  </p>
-                  <p>{item.reason}</p>
-                  {item.address ? <p className="hint">{item.address}</p> : null}
-                </li>
-              );
-            })}
-          </ol>
-        </>
-      ) : null}
-      {!pending && !plan ? <p className="empty">{empty}</p> : null}
-    </section>
+        <p className="why-label">Why this fits</p>
+        <p>{item.reason}</p>
+        {percent != null ? (
+          <div className="affinity">
+            <span>Affinity</span>
+            <span className="affinity-track"><span style={{ width: `${percent}%` }} /></span>
+            <strong>{percent}</strong>
+          </div>
+        ) : null}
+      </div>
+    </article>
   );
 }
 
 export function App() {
   const [health, setHealth] = useState(null);
   const [presets, setPresets] = useState([]);
-  const [favorites, setFavorites] = useState(["Radiohead", "Amélie", "ramen"]);
-  const [target, setTarget] = useState("place");
-  const [city, setCity] = useState("Lisbon");
-  const [mode, setMode] = useState("qloo");
+  const [favorites, setFavorites] = useState(DESK_DEFAULTS.favorites);
+  const [target, setTarget] = useState(DESK_DEFAULTS.target);
+  const [city, setCity] = useState(DESK_DEFAULTS.city);
+  const [mode, setMode] = useState(DESK_DEFAULTS.mode);
+  const [user, setUser] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
+  const [deskUid, setDeskUid] = useState(null);
+  const [syncNote, setSyncNote] = useState("");
+  const [accountOpen, setAccountOpen] = useState(false);
   const [qlooPending, setQlooPending] = useState(false);
   const [plainPending, setPlainPending] = useState(false);
   const [qlooPlan, setQlooPlan] = useState(null);
@@ -135,6 +215,75 @@ export function App() {
   const [workflowPending, setWorkflowPending] = useState(false);
   const [workflow, setWorkflow] = useState(null);
   const [workflowError, setWorkflowError] = useState("");
+  const [composerOpen, setComposerOpen] = useState(true);
+
+  useEffect(() => onAuthStateChanged(auth, (next) => {
+    setUser(next);
+    setAuthReady(true);
+    if (next) setAccountOpen(false);
+  }), []);
+
+  useEffect(() => {
+    if (!authReady) return;
+    let cancelled = false;
+    if (!user) {
+      setDeskUid(null);
+      setFavorites(DESK_DEFAULTS.favorites);
+      setTarget(DESK_DEFAULTS.target);
+      setCity(DESK_DEFAULTS.city);
+      setMode(DESK_DEFAULTS.mode);
+      setQlooPlan(null);
+      setPlainPlan(null);
+      setError("");
+      setSyncNote("");
+      setComposerOpen(true);
+      return undefined;
+    }
+    async function restore() {
+      let saved = null;
+      try {
+        saved = await loadCloudDesk(user.uid);
+      } catch {
+        saved = null;
+      }
+      if (!saved) saved = readDesk(user.uid);
+      if (cancelled) return;
+      if (saved) {
+        if (Array.isArray(saved.favorites) && saved.favorites.length >= 3) setFavorites(saved.favorites);
+        if (typeof saved.target === "string") setTarget(saved.target);
+        if (typeof saved.city === "string") setCity(saved.city);
+        if (saved.mode === "qloo" || saved.mode === "plain" || saved.mode === "both") setMode(saved.mode);
+        if (saved.qlooPlan) setQlooPlan(saved.qlooPlan);
+        if (saved.plainPlan) setPlainPlan(saved.plainPlan);
+        if (saved.qlooPlan || saved.plainPlan) setComposerOpen(false);
+      }
+      setDeskUid(user.uid);
+    }
+    restore();
+    return () => {
+      cancelled = true;
+    };
+  }, [authReady, user?.uid]);
+
+  useEffect(() => {
+    if (!user || deskUid !== user.uid) return undefined;
+    const desk = { favorites, target, city, mode, qlooPlan, plainPlan };
+    try {
+      localStorage.setItem(deskKey(user.uid), JSON.stringify(desk));
+    } catch {
+      // A private browser can refuse storage. Firestore still keeps the desk.
+    }
+    const timer = setTimeout(() => {
+      saveCloudDesk(user.uid, desk).then(() => {
+        setSyncNote("");
+      }).catch((failure) => {
+        if (failure?.code === "permission-denied") {
+          setSyncNote("This account cannot save to Firestore yet. In the Firebase console, allow a signed-in user to read and write only their own desks document.");
+        }
+      });
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [user, deskUid, favorites, target, city, mode, qlooPlan, plainPlan]);
 
   useEffect(() => {
     let cancelled = false;
@@ -216,10 +365,13 @@ export function App() {
           requestPlan("plain", payload).then(setPlainPlan).catch((failure) => messages.push(fail(failure))).finally(() => setPlainPending(false)),
         ]);
         if (messages.length > 0) setError(messages.filter(Boolean).join(" "));
+        else setComposerOpen(false);
       } else if (nextMode === "plain") {
         setPlainPlan(await requestPlan("plain", payload));
+        setComposerOpen(false);
       } else {
         setQlooPlan(await requestPlan("qloo", payload));
+        setComposerOpen(false);
       }
     } catch (failure) {
       setError(fail(failure));
@@ -278,56 +430,181 @@ export function App() {
   const pending = qlooPending || plainPending;
   const showQloo = mode !== "plain";
   const showPlain = mode !== "qloo";
+  const storyPlan = qlooPlan || plainPlan;
+  const nightLabel = target === "place" ? "night" : target;
+  const radar = radarValues(favorites, qlooPlan?.items || []);
+  const trace = Array.isArray(qlooPlan?.trace) ? qlooPlan.trace : [];
 
   return (
-    <div className="page">
-      <header className="masthead">
-        <p className="mark">Taste Desk</p>
-        <h1>Turn what you love into a plan.</h1>
-        <p className="lede">
-          Name a few favorites. Qloo ranks real picks, and each reason has to point back to one of those favorites.
-        </p>
+    <div className="desk">
+      <header className="topbar">
+        <a className="brand" href="#plan">
+          <span className="mark">T</span>
+          Taste Desk
+        </a>
+        <nav>
+          <a href="#plan">Your plan</a>
+          <a href="#method">Methodology</a>
+          <button
+            type="button"
+            className="text-link"
+            onClick={() => {
+              if (!user) {
+                setAccountOpen(true);
+                return;
+              }
+              setComposerOpen(true);
+            }}
+          >
+            A new city
+          </button>
+        </nav>
+        <div className="account-slot">
+          <button
+            type="button"
+            className="avatar"
+            aria-expanded={accountOpen}
+            aria-controls="account-menu"
+            onClick={() => setAccountOpen((open) => !open)}
+          >
+            {user ? accountInitials(user) : "in"}
+          </button>
+          {accountOpen ? (
+            <div className="account-menu" id="account-menu">
+              <AccountPanel user={user} id="account-menu-panel" onSession={() => setUser(auth.currentUser)} />
+            </div>
+          ) : null}
+        </div>
       </header>
 
-      <main className={showQloo && showPlain ? "layout compare" : "layout"}>
-        <TasteInterview
-          favorites={favorites}
-          setFavorites={setFavorites}
-          target={target}
-          setTarget={setTarget}
-          city={city}
-          setCity={setCity}
-          mode={mode}
-          setMode={setMode}
-          targets={TARGETS}
-          modes={MODES}
-          presets={presets}
-          pending={pending}
-          error={error}
-          health={health}
-          credentialLabel={credentialLabel}
-          onPlan={onPlan}
-        />
+      <main id="plan">
+        <p className="eyebrow">Results based on Taste Desk · Your taste, translated into a new city</p>
+        <h1>
+          Your {city.trim() || "next"} {nightLabel}, based on <em>{favoritePhrase(favorites)}</em>.
+        </h1>
+        <p className="lede">
+          {storyPlan?.summary || "Name a few favorites. Qloo ranks real picks, and each reason has to point back to one of those favorites."}
+        </p>
+        <div className="hero-row">
+          <div className="tag-row">
+            {qlooPlan?.grounded ? <span className="tag solid">Grounded in Qloo</span> : null}
+            {plainPlan && !qlooPlan ? <span className="tag warn">Not checked</span> : null}
+            {city.trim() ? <span className="tag">{city.trim()}</span> : null}
+            <span className="tag">{TARGETS.find((item) => item.id === target)?.label}</span>
+          </div>
+          {user ? (
+            <button type="button" className="edit-tastes" onClick={() => setComposerOpen((open) => !open)}>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 16.5V20h3.5L18.8 8.7l-3.5-3.5L4 16.5z" />
+                <path d="M14.2 6.3l3.5 3.5" />
+              </svg>
+              {composerOpen ? "Hide the interview" : "Edit tastes"}
+            </button>
+          ) : null}
+        </div>
+        <CityMood city={city} />
 
-        {showQloo ? (
-          <PlanColumn
-            title="Why these"
-            plan={qlooPlan}
-            kind="qloo"
-            pending={qlooPending}
-            empty="Each Qloo pick will show the favorites that connected to it, plus the affinity Qloo returned."
+        {syncNote ? <p className="form-error">{syncNote}</p> : null}
+        {!authReady ? <p className="loading">Checking your account.</p> : null}
+        {authReady && !user ? <AccountPanel user={null} onSession={() => setUser(auth.currentUser)} /> : null}
+        {user && (composerOpen || (!qlooPlan && !plainPlan)) ? (
+          <TasteInterview
+            favorites={favorites}
+            setFavorites={setFavorites}
+            target={target}
+            setTarget={setTarget}
+            city={city}
+            setCity={setCity}
+            mode={mode}
+            setMode={setMode}
+            targets={TARGETS}
+            modes={MODES}
+            presets={presets}
+            pending={pending}
+            error={error}
+            health={health}
+            credentialLabel={credentialLabel}
+            onPlan={onPlan}
           />
         ) : null}
-        {showPlain ? (
-          <PlanColumn
-            title="Plain model"
-            plan={plainPlan}
-            kind="plain"
-            pending={plainPending}
-            empty="A plain model answer for the same favorites. It can name places Qloo never returned."
-          />
+
+        <div className={qlooPlan ? "results" : "results single"}>
+          <section className="venues" aria-live="polite">
+            {qlooPending ? <p className="loading">Asking Qloo for a grounded plan. Writing the reasons can take a little longer.</p> : null}
+            {showQloo && qlooPlan ? qlooPlan.items.map((item) => (
+              <VenueCard key={item.entity_id || item.name} item={item} city={city.trim()} />
+            )) : null}
+            {showPlain ? (
+              <section className="plain-block">
+                <div className="result-head">
+                  <h2>Plain model</h2>
+                  <span className="tag warn">Not checked</span>
+                </div>
+                {plainPending ? <p className="loading">Writing a comparison.</p> : null}
+                {plainPlan ? (
+                  <>
+                    <p className="hint">These names were not checked against Qloo. Closed or invented places can appear here.</p>
+                    {plainPlan.items.map((item) => (
+                      <article key={item.name} className="venue plain-venue">
+                        <div className="venue-copy">
+                          <h3>{item.name}</h3>
+                          <p className="because">Connected to {(item.cited_inputs || favorites).join(", ")}</p>
+                          <p>{item.reason}</p>
+                        </div>
+                      </article>
+                    ))}
+                  </>
+                ) : null}
+              </section>
+            ) : null}
+          </section>
+
+          {qlooPlan ? (
+            <aside className="sidebar" id="method">
+              <section className="side-card">
+                <h2>Journey radar</h2>
+                <JourneyMap items={qlooPlan.items} city={city.trim()} />
+                <ol className="stops">
+                  {qlooPlan.items.map((item, index) => (
+                    <li key={item.entity_id || item.name}>
+                      <span>{index + 1}</span>
+                      <div>
+                        <strong>{item.name}</strong>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+              <section className="side-card">
+                <h2>Journey progression</h2>
+                <Radar points={radar} />
+              </section>
+              <section className="side-card rationale">
+                <h2>Curator's rationale</h2>
+                <p>{qlooPlan.summary}</p>
+              </section>
+            </aside>
+          ) : null}
+        </div>
+
+        {trace.length > 0 ? (
+          <section className="decided">
+            <h2>How the Taste Agent Decided</h2>
+            <ul className="trace">
+              {trace.map((line, index) => (
+                <li key={`${index}-${line}`}>{line}</li>
+              ))}
+            </ul>
+          </section>
         ) : null}
       </main>
+
+      <footer>
+        <strong>Taste Desk</strong>
+        <p>Aggregate taste affinities, not claims about any individual. The plain-model column stays unchecked on purpose.</p>
+        <a href="#plan">Plan</a>
+        <a href="#method">Method</a>
+      </footer>
 
       <details className="console">
         <summary>Run a raw Qloo workflow</summary>
@@ -343,7 +620,7 @@ export function App() {
           <p className="summary">{selected?.summary}</p>
           <label htmlFor="input">Input JSON</label>
           <textarea id="input" value={draft} spellCheck="false" onChange={(event) => setDraft(event.target.value)} />
-          <button type="submit" disabled={workflowPending}>
+          <button type="submit" className="cta" disabled={workflowPending}>
             {workflowPending ? "Running the harness" : "Run workflow"}
           </button>
           {workflowError ? <p className="form-error">{workflowError}</p> : null}

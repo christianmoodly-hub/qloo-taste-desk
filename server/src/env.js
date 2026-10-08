@@ -18,7 +18,7 @@ export function llmConfigured(env = process.env) {
   return gemini || groq;
 }
 
-const SECRET_ENV_NAMES = ["QLOO_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY"];
+const SECRET_ENV_NAMES = ["QLOO_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY", "UNSPLASH_ACCESS_KEY"];
 
 export function redactSecrets(text, env = process.env) {
   if (typeof text !== "string" || text.length === 0) return "";
