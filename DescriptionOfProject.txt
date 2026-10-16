@@ -1,0 +1,19 @@
+Taste Desk: your taste, translated for a new city
+
+When you land somewhere new, you have no local knowledge. Search results lean toward tourist rankings, and a general AI assistant will confidently recommend venues that don't exist. Taste Desk helps people who've just arrived in a city, such as a remote worker relocating to Lisbon, find places that fit them.
+
+How it works. You enter three to five things you love (a band, a film, a dish) and where you're landing. An agent then:
+
+Resolves each favorite to a real Qloo entity (describe). When a favorite is a taste rather than an entity, like "ramen," it searches taste tags instead (find_tags). Ambiguous names are disambiguated so Radiohead means the artist, not the album.
+Recommends real places from Qloo's taste graph (recommend), filters out results that aren't visitable venues, and shows the affinity and popularity Qloo returned for each pick.
+Maps where your taste lives in the city (where_popular). Each favorite gets its own color on the map, with clusters named by neighborhood. In the Lisbon demo, Radiohead's and Amélie's fans both point toward São José, and the app says so. When a favorite has no heatmap in a city, the app says that too instead of faking it.
+Describes your taste in tags (entity_tags), such as Alternative Rock and Cerebral for Radiohead, and Whimsical and Magic Realism for Amélie, filtered to taste-like tags only.
+Explains each pick in plain language, citing which of your favorites led to it. A model writes the explanation but is only allowed to use items Qloo returned, and the server drops anything else it invents.
+
+An agent trace on every result shows each decision: which entity was chosen, which calls ran, what was skipped, and what was removed.
+
+Why it needs Qloo. The app includes a "Why not just ask a plain AI?" side-by-side. Given the same favorites, a plain model named venues that Qloo never returned and that we couldn't verify. Take Qloo away and the app has no verified places, no affinity scores, no heatmap, and no taste tags.
+
+Responsible use. Results are aggregate taste patterns, not claims about any individual. The plain-model column is labeled unchecked on purpose. API keys stay on the server and never reach the browser.
+
+Try it: open the live link and click the Lisbon example for an instant result with no wait. Because the first load on a free host can take up to a minute to wake, saved examples return immediately, and custom plans work in any city.
